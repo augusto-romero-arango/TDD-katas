@@ -221,7 +221,9 @@ public class ReciboSpecification
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
 
+        var reciboGeneado = recibo.ToString();
         Assert.Equal("""
                      Factura
                      Cepillo de dientes: $ 3.000
@@ -232,6 +234,6 @@ public class ReciboSpecification
                      Cepillo de dientes (2X1): -$ 3.000
                      Cepillo de dientes (2X1): -$ 3.000
                      TOTAL A PAGAR: $ 6.000
-                     """, recibo.ToString());
+                     """, reciboGeneado);
     }
 }

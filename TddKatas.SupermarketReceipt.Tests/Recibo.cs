@@ -55,7 +55,8 @@ public class Recibo
 
         if (_descuento2X1.TryGetValue(producto, out var descuento2X1))
         {
-            if(_productosFacturados.Count(x => x == producto) == descuento2X1.UnidadesAComprar)
+            var cantidadComprada = _productosFacturados.Count(x => x == producto);
+            if(cantidadComprada % descuento2X1.UnidadesAComprar == 0)
             {
                 _descuentosAplicados.Add((producto, (TipoDescuento.Lleva2Paga1, 1)));
             }
