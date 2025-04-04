@@ -5,10 +5,10 @@ public class Recibo
     private enum TipoDescuento
     {
         Porcentaje,
-        Lleva2Paga1
+        LlevaXPagaY
     }
 
-    private readonly Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> _descuento2X1;
+    private readonly Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> _descuentosPagaXLlevaY;
     private readonly List<string> _productosFacturados = new();
     private readonly List<(string, (TipoDescuento, decimal))> _descuentosAplicados = new();
 
@@ -21,21 +21,22 @@ public class Recibo
     private readonly Dictionary<String, decimal> _descuentosPorPorcentaje;
 
 
+    //TODO: Debemos mejorar los constructores para que reciban todos los tipos de descuento
     public Recibo()
     {
         _descuentosPorPorcentaje = new Dictionary<string, decimal>();
-        _descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
+        _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
     public Recibo(Dictionary<string, decimal> descuentosPorPorcentaje)
     {
         _descuentosPorPorcentaje = descuentosPorPorcentaje;
-        _descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
+        _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
-    public Recibo(Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> descuento2X1)
+    public Recibo(Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> descuentosPagaXLlevaY)
     {
-        _descuento2X1 = descuento2X1;
+        _descuentosPagaXLlevaY = descuentosPagaXLlevaY;
         _descuentosPorPorcentaje = new Dictionary<string, decimal>();
     }
 
@@ -50,15 +51,17 @@ public class Recibo
         
         _productosFacturados.Add(producto);
 
+        //TODO: La lógica de aplciación de desceuntos está an el método Adicionar
+        //TODO: Por cada tipo de descuento está saliendo un condicional
         if (_descuentosPorPorcentaje.TryGetValue(producto, out var descuento))
             _descuentosAplicados.Add((producto, (TipoDescuento.Porcentaje, descuento)));
 
-        if (_descuento2X1.TryGetValue(producto, out var descuento2X1))
+        if (_descuentosPagaXLlevaY.TryGetValue(producto, out var descuento2X1))
         {
             var cantidadComprada = _productosFacturados.Count(x => x == producto);
             if(cantidadComprada % descuento2X1.UnidadesAComprar == 0)
             {
-                _descuentosAplicados.Add((producto, (TipoDescuento.Lleva2Paga1, 1)));
+                _descuentosAplicados.Add((producto, (TipoDescuento.LlevaXPagaY, 1)));
             }
         }
     }
@@ -81,7 +84,9 @@ public class Recibo
 
         var detalleDescuentos = _descuentosAplicados
             .Select(descuento =>
-            {
+            { 
+                //TODO: Dependiendo del tipo de descunento se debe aplicar un formato diferente
+                //TODO: El nombre de los ítems de las tuplas no son descriptivos
                string formatoDescuento = descuento.Item2.Item1 == TipoDescuento.Porcentaje ? $"{descuento.Item2.Item2:P0}" : "2X1";
 
                return $"{descuento.Item1} ({formatoDescuento}): {descuento.Item2.Item2 * -1 * _precios[descuento.Item1]:C0}";
@@ -118,6 +123,7 @@ public class Recibo
     {
         return _descuentosAplicados.Select(d =>
         {
+            //Los nombres Item1 e Item2 de las tuplas no son descriptivos
             var precioTotal = _precios[d.Item1];
             var descuento = d.Item2;
             return (int) (precioTotal *  descuento.Item2);
