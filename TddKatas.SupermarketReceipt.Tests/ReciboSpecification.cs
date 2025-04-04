@@ -61,4 +61,17 @@ Cepillo de dientes: $ 3.000
 Jabón: $ 2.000
 TOTAL A PAGAR: $ 5.000", recibo.ToString());
     }
+
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_tiene_porcentaje_de_descuento()
+    {
+        var recibo = new Recibo();
+
+        recibo.Adicionar("Cepillo de dientes");
+
+        Assert.Equal(@"Factura
+Cepillo de dientes: $ 3.000
+Cepillo de dientes (10%): -$ 300
+TOTAL A PAGAR: $ 2.700", recibo.ToString());
+    }
 }
