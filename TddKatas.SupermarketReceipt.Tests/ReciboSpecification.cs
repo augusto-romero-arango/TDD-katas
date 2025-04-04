@@ -90,7 +90,7 @@ public class ReciboSpecification
     public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_tiene_porcentaje_de_descuento()
     {
  
-        DescuentoPorPorcentaje[] descuentosPorcentaje = new[]
+        IDescuento[] descuentosPorcentaje = new[]
         {
             new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje)
         };
@@ -111,7 +111,7 @@ public class ReciboSpecification
     public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_jabon_y_ambos_tienen_porcentaje_de_descuento()
     {
 
-        DescuentoPorPorcentaje[] descuentosPorcentaje = new[]
+        IDescuento[] descuentosPorcentaje = new[]
         {
             new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje),
             new DescuentoPorPorcentaje("Jabón", 0.2m, TipoDescuento.Porcentaje)
@@ -138,7 +138,7 @@ public class ReciboSpecification
     public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_con_descuento_genera_descuento_por_cada_cepillo()
     {
 
-        DescuentoPorPorcentaje[] descuentosPorcentaje = new[]
+        IDescuento[] descuentosPorcentaje = new[]
         {
             new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje)
         };
@@ -161,7 +161,7 @@ public class ReciboSpecification
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_y_hay_descuento_2X1_Paga_3000()
     {
-        DescuentoPagaXLlevaY[] descuentosPagaXLlevaY = new[]
+        IDescuento[] descuentosPagaXLlevaY = new[]
         {
             new DescuentoPagaXLlevaY("Cepillo de dientes", 2, 1, TipoDescuento.LlevaXPagaY)
         };
@@ -184,7 +184,7 @@ public class ReciboSpecification
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_tres_cepillos_y_hay_descuento_2X1_regalan_1_y_Paga_6000()
     {
-        var descuentosPagaXLlevaY = new[]
+        IDescuento[] descuentosPagaXLlevaY = new[]
         {
             new DescuentoPagaXLlevaY("Cepillo de dientes", 2, 1, TipoDescuento.LlevaXPagaY)
         };

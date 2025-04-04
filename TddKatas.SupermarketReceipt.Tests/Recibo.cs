@@ -3,15 +3,18 @@ namespace TddKatas.SupermarketReceipt.Tests;
 public record DescuentoPorPorcentaje(
     string Producto,
     decimal PorcentajeDescuento,
-    TipoDescuento TipoDescuento);
+    TipoDescuento TipoDescuento) : IDescuento;
+
+public interface IDescuento
+{
+    TipoDescuento TipoDescuento { get; }
+}
 
 public record DescuentoPagaXLlevaY(
     string Producto,
     int UnidadesAComprar,
     int UnidadesGratis,
-    TipoDescuento TipoDescuento)
-{
-}
+    TipoDescuento TipoDescuento) : IDescuento;
 
 public  enum TipoDescuento
 {
@@ -20,8 +23,8 @@ public  enum TipoDescuento
 }
 public class Recibo
 {
-    private readonly DescuentoPagaXLlevaY[] _descuentoPagaXLlevaIes = [];
-    private readonly DescuentoPorPorcentaje[] _descuentosGenerales = [];
+    private readonly List<IDescuento> _descuentoPagaXLlevaIes = [];
+    private readonly List<IDescuento> _descuentosGenerales = [];
 
 
     private readonly List<string> _productosFacturados = new();
@@ -34,7 +37,6 @@ public class Recibo
     };
 
 
-    //TODO: Debemos mejorar los constructores para que reciban todos los tipos de descuento
     
     
     public Recibo()
@@ -43,17 +45,26 @@ public class Recibo
         new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
-    public Recibo(DescuentoPorPorcentaje[] descuentosGenerales)
+    public Recibo(IDescuento[] descuentos)
     {
-        _descuentosGenerales = descuentosGenerales;
-        new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
+        foreach (var descuento in descuentos)
+        {
+            if(descuento.TipoDescuento == TipoDescuento.LlevaXPagaY)
+                _descuentoPagaXLlevaIes.Add(descuento);
+            else
+                _descuentosGenerales.Add(descuento);
+        }
     }
 
-    public Recibo(DescuentoPagaXLlevaY[] descuentoPagaXLlevaIes)
-    {
-        _descuentoPagaXLlevaIes = descuentoPagaXLlevaIes;
-        new Dictionary<string, decimal>();
-    }
+    // public Recibo(DescuentoPorPorcentaje[] descuentosGenerales)
+    // {
+    //     _descuentosGenerales = descuentosGenerales.ToList();
+    // }
+    //
+    // public Recibo(DescuentoPagaXLlevaY[] descuentoPagaXLlevaIes)
+    // {
+    //     _descuentoPagaXLlevaIes = descuentoPagaXLlevaIes.ToList();
+    // }
 
     public void Adicionar(string producto)
     {
@@ -70,6 +81,8 @@ public class Recibo
         //TODO: Por cada tipo de descuento está saliendo un condicional
      
         _descuentosGenerales
+            .Where(d => d.TipoDescuento == TipoDescuento.Porcentaje)
+            .Select(d => (DescuentoPorPorcentaje)d)
             .Where(d => d.Producto == producto)
             .ToList()
             .ForEach(d =>
@@ -79,6 +92,8 @@ public class Recibo
         
         
         _descuentoPagaXLlevaIes
+            .Where(d => d.TipoDescuento == TipoDescuento.LlevaXPagaY)
+            .Select(d => (DescuentoPagaXLlevaY)d)
             .Where(x => x.Producto == producto)
             .ToList()
             .ForEach(d =>
