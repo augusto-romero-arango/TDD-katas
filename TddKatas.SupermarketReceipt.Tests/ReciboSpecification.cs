@@ -64,6 +64,8 @@ TOTAL FACTURA: $ 5.000", recibo.ToString());
 public class Recibo
 {
     private string? _productoFacturado;
+    private List<string> _productosFacturados = new List<string>();
+    
     private readonly Dictionary<string, int> _precios = new()
     {
         { "Cepillo de dientes", 3000 },
@@ -78,15 +80,25 @@ public class Recibo
         if (!_precios.ContainsKey(producto))
             throw new ArgumentException($"El producto {producto} no existe en el sistema.");
         
-        _productoFacturado = producto;
+        _productosFacturados.Add(producto);
     }
 
     public override string ToString()
     {
+        int totalFactura = 0;
+        var detalles = _productosFacturados.Select(producto =>
+            {
+                totalFactura += _precios[producto];
+                return $"{producto}: {_precios[producto]:C0}";
+            }
+        ).ToArray();
+        
+        var detalle = string.Join(Environment.NewLine, detalles);
+        
         return $"""
                Factura
-               {_productoFacturado}: {_precios[_productoFacturado]:C0}
-               TOTAL FACTURA: {_precios[_productoFacturado]:C0}
+               {detalle}
+               TOTAL FACTURA: {totalFactura:C0}
                """;
     }
 }
