@@ -165,16 +165,8 @@ public class ReciboSpecification
         {
             new DescuentoPagaXLlevaY("Cepillo de dientes", 2, 1, TipoDescuento.LlevaXPagaY)
         };
-        
-        var descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>
-        {
-            {
-                "Cepillo de dientes",
-                (2, 1)
-            }
-        };
 
-        var recibo = new Recibo(descuento2X1, descuentosPagaXLlevaY);
+        var recibo = new Recibo(descuentosPagaXLlevaY);
 
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Cepillo de dientes");
@@ -192,19 +184,12 @@ public class ReciboSpecification
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_tres_cepillos_y_hay_descuento_2X1_regalan_1_y_Paga_6000()
     {
-        var descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>
-        {
-            {
-                "Cepillo de dientes",
-                (2, 1)
-            }
-        };
         var descuentosPagaXLlevaY = new[]
         {
             new DescuentoPagaXLlevaY("Cepillo de dientes", 2, 1, TipoDescuento.LlevaXPagaY)
         };
 
-        var recibo = new Recibo(descuento2X1, descuentosPagaXLlevaY);
+        var recibo = new Recibo(descuentosPagaXLlevaY);
 
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Cepillo de dientes");
@@ -224,19 +209,13 @@ public class ReciboSpecification
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_cuatro_cepillos_y_hay_descuento_2X1_regalan_2_y_Paga_6000()
     {
-        var descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>
-        {
-            {
-                "Cepillo de dientes",
-                (2, 1)
-            }
-        };
+ 
         var descuentosPagaXLlevaY = new[]
         {
             new DescuentoPagaXLlevaY("Cepillo de dientes", 2, 1, TipoDescuento.LlevaXPagaY)
         };
 
-        var recibo = new Recibo(descuento2X1, descuentosPagaXLlevaY);
+        var recibo = new Recibo(descuentosPagaXLlevaY);
 
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Cepillo de dientes");

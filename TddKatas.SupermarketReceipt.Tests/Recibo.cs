@@ -20,7 +20,6 @@ public  enum TipoDescuento
 }
 public class Recibo
 {
-    private readonly Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> _descuentosPagaXLlevaY;
     private readonly DescuentoPagaXLlevaY[] _descuentoPagaXLlevaIes = [];
     private readonly DescuentoPorPorcentaje[] _descuentosGenerales = [];
 
@@ -41,19 +40,17 @@ public class Recibo
     public Recibo()
     {
         new Dictionary<string, decimal>();
-        _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
+        new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
     public Recibo(DescuentoPorPorcentaje[] descuentosGenerales)
     {
         _descuentosGenerales = descuentosGenerales;
-        _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
+        new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
-    public Recibo(Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> descuentosPagaXLlevaY,
-        DescuentoPagaXLlevaY[] descuentoPagaXLlevaIes)
+    public Recibo(DescuentoPagaXLlevaY[] descuentoPagaXLlevaIes)
     {
-        _descuentosPagaXLlevaY = descuentosPagaXLlevaY;
         _descuentoPagaXLlevaIes = descuentoPagaXLlevaIes;
         new Dictionary<string, decimal>();
     }
@@ -80,15 +77,6 @@ public class Recibo
                 _descuentosAplicados.Add((d.Producto, (d.TipoDescuento, d.PorcentajeDescuento)));
             });
         
-
-        // if (_descuentosPagaXLlevaY.TryGetValue(producto, out var descuento2X1))
-        // {
-        //     var cantidadComprada = _productosFacturados.Count(x => x == producto);
-        //     if(cantidadComprada % descuento2X1.UnidadesAComprar == 0)
-        //     {
-        //         _descuentosAplicados.Add((producto, (TipoDescuento.LlevaXPagaY, 1)));
-        //     }
-        // }
         
         _descuentoPagaXLlevaIes
             .Where(x => x.Producto == producto)
