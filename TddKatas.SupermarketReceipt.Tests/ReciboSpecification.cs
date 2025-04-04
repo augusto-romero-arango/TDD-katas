@@ -22,11 +22,13 @@ public class ReciboSpecification
         var recibo = new Recibo();
 
         recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
 
         Assert.Equal("""
                      Factura
                      Cepillo de dientes: $ 3.000
-                     TOTAL A PAGAR: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     TOTAL A PAGAR: $ 6.000
                      """, recibo.ToString());
     }
 
