@@ -15,6 +15,20 @@ public class ReciboSpecification
                      TOTAL A PAGAR: $ 3.000
                      """, recibo.ToString());
     }
+    
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillo_totalizar_en_6000()
+    {
+        var recibo = new Recibo();
+
+        recibo.Adicionar("Cepillo de dientes");
+
+        Assert.Equal("""
+                     Factura
+                     Cepillo de dientes: $ 3.000
+                     TOTAL A PAGAR: $ 3.000
+                     """, recibo.ToString());
+    }
 
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_un_jabon_totalizar_en_2000()
@@ -89,7 +103,7 @@ public class ReciboSpecification
     }
     
     [Fact]
-    public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_jabon_y_ambos_porcentaje_de_descuento()
+    public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_jabon_y_ambos_tienen_porcentaje_de_descuento()
     {
         Dictionary<string, decimal> descuentos = new()
         {
@@ -111,6 +125,28 @@ public class ReciboSpecification
                      TOTAL A PAGAR: $ 4.300
                      """, recibo.ToString());
     }
+
+    // [Fact]
+    // public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_con_descuento_2X1_cobra_dos_y_descuenta_uno()
+    // {
+    //     Dictionary<string, decimal> descuentos = new()
+    //     {
+    //         {"Cepillo de dientes", 0.1m}
+    //     };
+    //     var recibo = new Recibo(descuentos);
+    //
+    //     recibo.Adicionar("Cepillo de dientes");
+    //     recibo.Adicionar("Cepillo de dientes");
+    //
+    //     Assert.Equal("""
+    //                  Factura
+    //                  Cepillo de dientes: $ 3.000
+    //                  Cepillo de dientes: $ 3.000
+    //                  DESCUENTOS APLICADOS:
+    //                  Cepillo de dientes: -$ 3.000
+    //                  TOTAL A PAGAR: $ 3.000
+    //                  """, recibo.ToString());
+    // }
     
     
 }
