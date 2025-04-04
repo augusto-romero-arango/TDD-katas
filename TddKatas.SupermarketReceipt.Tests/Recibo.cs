@@ -41,7 +41,7 @@ public class Recibo
     {
         var descuentos = string.Empty;
         if(_descuentosAplicados.Any())
-            descuentos = Environment.NewLine+_descuentosAplicados.Select( d => 
+            descuentos = Environment.NewLine+"DESCUENTOS APLICADOS:"+Environment.NewLine+_descuentosAplicados.Select( d => 
                 $"{d.Key} ({d.Value:P0}): {d.Value*-1*_precios[d.Key]:C0}"
             ).ToArray()
                 .Aggregate((total, detalle) => $"{total}{Environment.NewLine}{detalle}");
