@@ -3,7 +3,7 @@
 public class ReciboSpecification
 {
     [Fact]
-    public void Debe_emitir_un_recibo_cuando_adiciono_un_producto()
+    public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_totalizar_en_3000()
     {
         var recibo = new Recibo();
         
@@ -13,6 +13,20 @@ public class ReciboSpecification
 Cepillo de dientes: $3.000
 TOTAL FACTURA: $3.000", recibo.ToString());
     }
+    
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_un_jabon_totalizar_en_2000()
+    {
+        var recibo = new Recibo();
+        
+        recibo.Adicionar("Jabón");
+        
+        Assert.Equal(@"Factura
+Jabón: $2.000
+TOTAL FACTURA: $2.000", recibo.ToString());
+    }
+
+    
 }
 
 public class Recibo
