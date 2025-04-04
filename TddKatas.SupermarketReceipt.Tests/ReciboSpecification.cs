@@ -75,6 +75,7 @@ TOTAL A PAGAR: $ 5.000", recibo.ToString());
 
         Assert.Equal(@"Factura
 Cepillo de dientes: $ 3.000
+DESCUENTOS APLICADOS:
 Cepillo de dientes (10 %): -$ 300
 TOTAL A PAGAR: $ 2.700", recibo.ToString());
     }
@@ -95,6 +96,7 @@ TOTAL A PAGAR: $ 2.700", recibo.ToString());
         Assert.Equal(@"Factura
 Cepillo de dientes: $ 3.000
 Jabón: $ 2.000
+DESCUENTOS APLICADOS:
 Cepillo de dientes (10 %): -$ 300
 Jabón (20 %): -$ 400
 TOTAL A PAGAR: $ 4.300", recibo.ToString());
