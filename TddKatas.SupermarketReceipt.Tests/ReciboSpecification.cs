@@ -43,6 +43,20 @@ TOTAL FACTURA: $ 2.000", recibo.ToString());
         var ex = Assert.Throws<ArgumentException>(() => recibo.Adicionar(""));
         Assert.Equal("Debe ingresar un producto.", ex.Message);
     }
+    
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_un_jabon_totalizar_en_5000()
+    {
+        var recibo = new Recibo();
+        
+        recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Jabón");
+        
+        Assert.Equal(@"Factura
+Cepillo de dientes: $ 3.000
+Jabón: $ 2.000
+TOTAL FACTURA: $ 5.000", recibo.ToString());
+    }
 
     
 }
