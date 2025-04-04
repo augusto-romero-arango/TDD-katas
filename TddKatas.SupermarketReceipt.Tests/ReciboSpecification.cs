@@ -31,7 +31,8 @@ TOTAL FACTURA: $ 2.000", recibo.ToString());
     {
         var recibo = new Recibo();
         
-        Assert.Throws<ArgumentException>(() => recibo.Adicionar("Cerveza"));
+        var ex = Assert.Throws<ArgumentException>(() => recibo.Adicionar("Cerveza"));
+        Assert.Equal("El producto Cerveza no existe en el sistema.", ex.Message);
     }
 
     
@@ -46,8 +47,11 @@ public class Recibo
         { "Jabón", 2000 }
     };
 
-    public void Adicionar(string? producto)
+    public void Adicionar(string producto)
     {
+        if (!_precios.ContainsKey(producto))
+            throw new ArgumentException($"El producto {producto} no existe en el sistema.");
+        
         _productoFacturado = producto;
     }
 
