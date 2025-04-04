@@ -25,6 +25,14 @@ TOTAL FACTURA: $ 3.000", recibo.ToString());
 Jabón: $ 2.000
 TOTAL FACTURA: $ 2.000", recibo.ToString());
     }
+    
+    [Fact]
+    public void Debe_lanzar_excepcion_cuando_adiciono_un_producto_no_existente()
+    {
+        var recibo = new Recibo();
+        
+        Assert.Throws<ArgumentException>(() => recibo.Adicionar("Cerveza"));
+    }
 
     
 }
@@ -32,7 +40,7 @@ TOTAL FACTURA: $ 2.000", recibo.ToString());
 public class Recibo
 {
     private string? _productoFacturado;
-    private Dictionary<string, int> _precios = new()
+    private readonly Dictionary<string, int> _precios = new()
     {
         { "Cepillo de dientes", 3000 },
         { "Jabón", 2000 }
