@@ -15,7 +15,6 @@ public class Recibo
    
 
     private readonly Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> _descuentosPagaXLlevaY;
-    private readonly Dictionary<string, decimal> _descuentosPorPorcentaje;
     private readonly DescuentoPorPorcentaje[] _descuentosGenerales = [];
 
 
@@ -34,13 +33,12 @@ public class Recibo
     
     public Recibo()
     {
-        _descuentosPorPorcentaje = new Dictionary<string, decimal>();
+        new Dictionary<string, decimal>();
         _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
-    public Recibo(Dictionary<string, decimal> descuentosPorPorcentaje, DescuentoPorPorcentaje[] descuentosGenerales)
+    public Recibo(DescuentoPorPorcentaje[] descuentosGenerales)
     {
-        _descuentosPorPorcentaje = descuentosPorPorcentaje;
         _descuentosGenerales = descuentosGenerales;
         _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
@@ -48,7 +46,7 @@ public class Recibo
     public Recibo(Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> descuentosPagaXLlevaY)
     {
         _descuentosPagaXLlevaY = descuentosPagaXLlevaY;
-        _descuentosPorPorcentaje = new Dictionary<string, decimal>();
+        new Dictionary<string, decimal>();
     }
 
     public void Adicionar(string producto)
@@ -64,9 +62,7 @@ public class Recibo
 
         //TODO: La lógica de aplciación de desceuntos está an el método Adicionar
         //TODO: Por cada tipo de descuento está saliendo un condicional
-        // if (_descuentosPorPorcentaje.TryGetValue(producto, out var descuento))
-        //     _descuentosAplicados.Add((producto, (TipoDescuento.Porcentaje, descuento)));
-        //
+     
         _descuentosGenerales
             .Where(d => d.TipoDescuento == TipoDescuento.Porcentaje && d.Producto == producto)
             .ToList()
