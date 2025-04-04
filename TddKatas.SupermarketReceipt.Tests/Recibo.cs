@@ -41,8 +41,14 @@ public class Recibo
     {
         var descuentos = string.Empty;
         if(_descuentosAplicados.Any())
-            descuentos = $"{Environment.NewLine}{_descuentosAplicados.First().Key} ({_descuentosAplicados.First().Value:P0}): {_descuentosAplicados.First().Value*-1*_precios[_descuentosAplicados.First().Key]:C0}";
+            descuentos = Environment.NewLine+_descuentosAplicados.Select( d => 
+                $"{d.Key} ({d.Value:P0}): {d.Value*-1*_precios[d.Key]:C0}"
+            ).ToArray()
+                .Aggregate((total, detalle) => $"{total}{Environment.NewLine}{detalle}");
+            // descuentos = $"{Environment.NewLine}{_descuentosAplicados.First().Key} ({_descuentosAplicados.First().Value:P0}): {_descuentosAplicados.First().Value*-1*_precios[_descuentosAplicados.First().Key]:C0}";
         
+            
+            
         return $"""
                 Factura
                 {CrearDetalleProductosDelRecibo()}{descuentos}

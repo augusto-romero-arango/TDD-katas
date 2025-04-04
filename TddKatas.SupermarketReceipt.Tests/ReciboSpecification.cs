@@ -96,7 +96,7 @@ TOTAL A PAGAR: $ 2.700", recibo.ToString());
 Cepillo de dientes: $ 3.000
 Jabón: $ 2.000
 Cepillo de dientes (10 %): -$ 300
-Jabón (10 %): -$ 400
-TOTAL A PAGAR: $ 2.700", recibo.ToString());
+Jabón (20 %): -$ 400
+TOTAL A PAGAR: $ 4.300", recibo.ToString());
     }
 }
