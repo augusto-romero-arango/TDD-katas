@@ -147,7 +147,7 @@ public class ReciboSpecification
                      DESCUENTOS APLICADOS:
                      Cepillo de dientes (10 %): -$ 300
                      Cepillo de dientes (10 %): -$ 300
-                     TOTAL A PAGAR: $ 2.400
+                     TOTAL A PAGAR: $ 5.400
                      """, recibo.ToString());
     }
     

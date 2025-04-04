@@ -3,7 +3,7 @@ namespace TddKatas.SupermarketReceipt.Tests;
 public class Recibo
 {
     private readonly List<string> _productosFacturados = new();
-    private readonly Dictionary<string, decimal> _descuentosAplicados = new();
+    private readonly List<(string, decimal)> _descuentosAplicados = new();
 
     private readonly Dictionary<string, int> _precios = new()
     {
@@ -35,7 +35,7 @@ public class Recibo
         _productosFacturados.Add(producto);
 
         if (_descuentos.TryGetValue(producto, out var descuento))
-            _descuentosAplicados.Add(producto, descuento);
+            _descuentosAplicados.Add((producto, descuento));
     }
 
     public override string ToString()
@@ -56,7 +56,7 @@ public class Recibo
 
         var detalleDescuentos = _descuentosAplicados
             .Select(descuento =>
-                $"{descuento.Key} ({descuento.Value:P0}): {descuento.Value * -1 * _precios[descuento.Key]:C0}"
+                $"{descuento.Item1} ({descuento.Item2:P0}): {descuento.Item2 * -1 * _precios[descuento.Item1]:C0}"
             ).ToArray()
             .Aggregate((acumulado, detalle) => $"{acumulado}{Environment.NewLine}{detalle}");
         
@@ -74,16 +74,17 @@ public class Recibo
 
     private int CalcularTotalRecibo()
     {
-        return _productosFacturados
-            .Select(producto =>
-            {
-                _descuentosAplicados.TryGetValue(producto, out var descuento);
 
-                if (descuento != 0)
-                    return (int) (_precios[producto] * (1 - descuento));
-
-                return _precios[producto];
-            })
+        var totalDescuentos = _descuentosAplicados.Select(d =>
+        {
+            var precioTotal = _precios[d.Item1];
+            var descuento = d.Item2;
+            return (int) (precioTotal *  descuento);
+        }).Sum();
+        var totalSinDescuentos = _productosFacturados
+            .Select(producto => _precios[producto])
             .Sum();
+        
+        return totalSinDescuentos- totalDescuentos;
     }
 }
