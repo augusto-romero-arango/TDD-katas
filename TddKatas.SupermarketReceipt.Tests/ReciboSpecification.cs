@@ -95,11 +95,10 @@ public class Recibo
 
     private string CrearDetalleDeProductosParaLaFactura()
     {
-        var detallePorProducto = _productosFacturados
+        return  _productosFacturados
             .Select(producto => $"{producto}: {_precios[producto]:C0}")
-            .ToArray();
-
-        return string.Join(Environment.NewLine, detallePorProducto);
+            .ToArray()
+            .Aggregate((detalleAcumulado, detallePorProducto)=> $"{detalleAcumulado}{Environment.NewLine}{detallePorProducto}");
     }
 
     private int CalcularTotalFactura()
