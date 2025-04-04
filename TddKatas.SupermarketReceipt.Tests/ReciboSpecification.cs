@@ -11,7 +11,7 @@ public class ReciboSpecification
 
         Assert.Equal(@"Factura
 Cepillo de dientes: $ 3.000
-TOTAL FACTURA: $ 3.000", recibo.ToString());
+TOTAL A PAGAR: $ 3.000", recibo.ToString());
     }
 
     [Fact]
@@ -23,7 +23,7 @@ TOTAL FACTURA: $ 3.000", recibo.ToString());
 
         Assert.Equal(@"Factura
 Jabón: $ 2.000
-TOTAL FACTURA: $ 2.000", recibo.ToString());
+TOTAL A PAGAR: $ 2.000", recibo.ToString());
     }
 
     [Fact]
@@ -59,53 +59,6 @@ TOTAL FACTURA: $ 2.000", recibo.ToString());
         Assert.Equal(@"Factura
 Cepillo de dientes: $ 3.000
 Jabón: $ 2.000
-TOTAL FACTURA: $ 5.000", recibo.ToString());
-    }
-}
-
-public class Recibo
-{
-    private readonly List<string> _productosFacturados = new();
-
-    private readonly Dictionary<string, int> _precios = new()
-    {
-        {"Cepillo de dientes", 3000},
-        {"Jabón", 2000}
-    };
-
-    public void Adicionar(string producto)
-    {
-        if (producto == "")
-            throw new ArgumentException("Debe ingresar un producto.");
-
-        if (!_precios.ContainsKey(producto))
-            throw new ArgumentException($"El producto {producto} no existe en el sistema.");
-
-        _productosFacturados.Add(producto);
-    }
-
-    public override string ToString()
-    {
-        return $"""
-                Factura
-                {CrearDetalleDeProductosParaLaFactura()}
-                TOTAL FACTURA: {CalcularTotalFactura():C0}
-                """;
-    }
-
-    private string CrearDetalleDeProductosParaLaFactura()
-    {
-        return  _productosFacturados
-            .Select(producto => $"{producto}: {_precios[producto]:C0}")
-            .ToArray()
-            .Aggregate((detalleAcumulado, detallePorProducto)=> $"{detalleAcumulado}{Environment.NewLine}{detallePorProducto}");
-    }
-
-    private int CalcularTotalFactura()
-    {
-        int totalFactura = _productosFacturados
-            .Select(producto => _precios[producto])
-            .Sum();
-        return totalFactura;
+TOTAL A PAGAR: $ 5.000", recibo.ToString());
     }
 }
