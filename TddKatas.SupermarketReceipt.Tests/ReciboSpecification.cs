@@ -58,6 +58,9 @@ public class Recibo
 
     public void Adicionar(string producto)
     {
+        if(producto == "")
+            throw new ArgumentException("Debe ingresar un producto.");
+        
         if (!_precios.ContainsKey(producto))
             throw new ArgumentException($"El producto {producto} no existe en el sistema.");
         
