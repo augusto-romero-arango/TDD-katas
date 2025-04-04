@@ -5,7 +5,7 @@ public class ReciboSpecification
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_un_producto()
     {
-        var recibo = new Reciboo();
+        var recibo = new Recibo();
         
         recibo.Adicionar("Cepillo de dientes");
         
@@ -15,10 +15,21 @@ TOTAL FACTURA: $3.000", recibo.ToString());
     }
 }
 
-public class Reciboo
+public class Recibo
 {
-    public void Adicionar(string producto)
+    private string? _productoFacturado;
+
+    public void Adicionar(string? producto)
     {
-        throw new NotImplementedException();
+        _productoFacturado = producto;
+    }
+
+    public override string ToString()
+    {
+        return $"""
+               Factura
+               {_productoFacturado}: $3.000
+               TOTAL FACTURA: $3.000
+               """;
     }
 }
