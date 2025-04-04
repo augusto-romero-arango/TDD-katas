@@ -31,7 +31,9 @@ TOTAL FACTURA: $ 2.000", recibo.ToString());
     {
         var recibo = new Recibo();
 
-        var ex = Assert.Throws<ArgumentException>(() => recibo.Adicionar("Cerveza"));
+        Action accionAdicionar = () => recibo.Adicionar("Cerveza");
+        
+        var ex = Assert.Throws<ArgumentException>(accionAdicionar);
         Assert.Equal("El producto Cerveza no existe en el sistema.", ex.Message);
     }
 
@@ -40,7 +42,9 @@ TOTAL FACTURA: $ 2.000", recibo.ToString());
     {
         var recibo = new Recibo();
 
-        var ex = Assert.Throws<ArgumentException>(() => recibo.Adicionar(""));
+        Action accionAdicionar = () => recibo.Adicionar("");
+        
+        var ex = Assert.Throws<ArgumentException>(accionAdicionar);
         Assert.Equal("Debe ingresar un producto.", ex.Message);
     }
 
@@ -82,20 +86,27 @@ public class Recibo
 
     public override string ToString()
     {
-        int totalFactura = _productosFacturados
-            .Select(producto => _precios[producto])
-            .Sum();
+        return $"""
+                Factura
+                {CrearDetalleDeProductosParaLaFactura()}
+                TOTAL FACTURA: {CalcularTotalFactura():C0}
+                """;
+    }
 
+    private string CrearDetalleDeProductosParaLaFactura()
+    {
         var detallePorProducto = _productosFacturados
             .Select(producto => $"{producto}: {_precios[producto]:C0}")
             .ToArray();
 
-        var prodcutosDetallados = string.Join(Environment.NewLine, detallePorProducto);
+        return string.Join(Environment.NewLine, detallePorProducto);
+    }
 
-        return $"""
-                Factura
-                {prodcutosDetallados}
-                TOTAL FACTURA: {totalFactura:C0}
-                """;
+    private int CalcularTotalFactura()
+    {
+        int totalFactura = _productosFacturados
+            .Select(producto => _precios[producto])
+            .Sum();
+        return totalFactura;
     }
 }
