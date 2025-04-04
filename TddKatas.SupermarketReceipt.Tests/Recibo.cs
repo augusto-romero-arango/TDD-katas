@@ -74,17 +74,23 @@ public class Recibo
 
     private int CalcularTotalRecibo()
     {
+        return CalcularTotalSinDescuentos() - CalcularTotalDescuentos();
+    }
 
-        var totalDescuentos = _descuentosAplicados.Select(d =>
+    private int CalcularTotalSinDescuentos()
+    {
+        return _productosFacturados
+            .Select(producto => _precios[producto])
+            .Sum();
+    }
+
+    private int CalcularTotalDescuentos()
+    {
+        return _descuentosAplicados.Select(d =>
         {
             var precioTotal = _precios[d.Item1];
             var descuento = d.Item2;
             return (int) (precioTotal *  descuento);
         }).Sum();
-        var totalSinDescuentos = _productosFacturados
-            .Select(producto => _precios[producto])
-            .Sum();
-        
-        return totalSinDescuentos- totalDescuentos;
     }
 }
