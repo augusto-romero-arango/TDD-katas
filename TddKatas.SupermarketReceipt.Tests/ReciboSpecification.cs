@@ -1,4 +1,6 @@
-﻿namespace TddKatas.SupermarketReceipt.Tests;
+﻿using System.Xml.Schema;
+
+namespace TddKatas.SupermarketReceipt.Tests;
 
 public class ReciboSpecification
 {
@@ -87,11 +89,16 @@ public class ReciboSpecification
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_tiene_porcentaje_de_descuento()
     {
+        //TODO:Eliminar
         Dictionary<string, decimal> descuentos = new()
         {
             {"Cepillo de dientes", 0.1m}
         };
-        var recibo = new Recibo(descuentos);
+        DescuentoPorPorcentaje[] descuentosPorcentaje = new[]
+        {
+            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje)
+        };
+        var recibo = new Recibo(descuentos, descuentosPorcentaje);
 
         recibo.Adicionar("Cepillo de dientes");
 
@@ -107,16 +114,25 @@ public class ReciboSpecification
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_jabon_y_ambos_tienen_porcentaje_de_descuento()
     {
+        //TODO:ELiminar
         Dictionary<string, decimal> descuentos = new()
         {
             {"Cepillo de dientes", 0.1m},
             {"Jabón", 0.2m},
         };
-        var recibo = new Recibo(descuentos);
+
+        DescuentoPorPorcentaje[] descuentosPorcentaje = new[]
+        {
+            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje),
+            new DescuentoPorPorcentaje("Jabón", 0.2m, TipoDescuento.Porcentaje)
+        };
+        
+        var recibo = new Recibo(descuentos, descuentosPorcentaje);
 
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Jabón");
 
+        var reciboGenerado = recibo.ToString();
         Assert.Equal("""
                      Factura
                      Cepillo de dientes: $ 3.000
@@ -125,17 +141,22 @@ public class ReciboSpecification
                      Cepillo de dientes (10 %): -$ 300
                      Jabón (20 %): -$ 400
                      TOTAL A PAGAR: $ 4.300
-                     """, recibo.ToString());
+                     """, reciboGenerado);
     }
 
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_con_descuento_genera_descuento_por_cada_cepillo()
     {
+        //TODO:Eliminar
         Dictionary<string, decimal> descuentos = new()
         {
             {"Cepillo de dientes", 0.1m}
         };
-        var recibo = new Recibo(descuentos);
+        DescuentoPorPorcentaje[] descuentosPorcentaje = new[]
+        {
+            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje)
+        };
+        var recibo = new Recibo(descuentos, descuentosPorcentaje);
 
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Cepillo de dientes");

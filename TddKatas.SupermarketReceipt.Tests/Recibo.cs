@@ -1,14 +1,24 @@
 namespace TddKatas.SupermarketReceipt.Tests;
 
+public record DescuentoPorPorcentaje(
+    string Producto,
+    decimal PorcentajeDescuento,
+    TipoDescuento TipoDescuento);
+
+public  enum TipoDescuento
+{
+    Porcentaje,
+    LlevaXPagaY
+}
 public class Recibo
 {
-    private enum TipoDescuento
-    {
-        Porcentaje,
-        LlevaXPagaY
-    }
+   
 
     private readonly Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> _descuentosPagaXLlevaY;
+    private readonly Dictionary<string, decimal> _descuentosPorPorcentaje;
+    private readonly DescuentoPorPorcentaje[] _descuentosGenerales = [];
+
+
     private readonly List<string> _productosFacturados = new();
     private readonly List<(string Producto, (TipoDescuento TipoDescuento, decimal PorcentajeDescuento) Descuento)> _descuentosAplicados = [];
 
@@ -18,19 +28,20 @@ public class Recibo
         {"Jabón", 2000}
     };
 
-    private readonly Dictionary<String, decimal> _descuentosPorPorcentaje;
-
 
     //TODO: Debemos mejorar los constructores para que reciban todos los tipos de descuento
+    
+    
     public Recibo()
     {
         _descuentosPorPorcentaje = new Dictionary<string, decimal>();
         _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
-    public Recibo(Dictionary<string, decimal> descuentosPorPorcentaje)
+    public Recibo(Dictionary<string, decimal> descuentosPorPorcentaje, DescuentoPorPorcentaje[] descuentosGenerales)
     {
         _descuentosPorPorcentaje = descuentosPorPorcentaje;
+        _descuentosGenerales = descuentosGenerales;
         _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
@@ -53,8 +64,17 @@ public class Recibo
 
         //TODO: La lógica de aplciación de desceuntos está an el método Adicionar
         //TODO: Por cada tipo de descuento está saliendo un condicional
-        if (_descuentosPorPorcentaje.TryGetValue(producto, out var descuento))
-            _descuentosAplicados.Add((producto, (TipoDescuento.Porcentaje, descuento)));
+        // if (_descuentosPorPorcentaje.TryGetValue(producto, out var descuento))
+        //     _descuentosAplicados.Add((producto, (TipoDescuento.Porcentaje, descuento)));
+        //
+        _descuentosGenerales
+            .Where(d => d.TipoDescuento == TipoDescuento.Porcentaje && d.Producto == producto)
+            .ToList()
+            .ForEach(d =>
+            {
+                _descuentosAplicados.Add((d.Producto, (d.TipoDescuento, d.PorcentajeDescuento)));
+            });
+        
 
         if (_descuentosPagaXLlevaY.TryGetValue(producto, out var descuento2X1))
         {
