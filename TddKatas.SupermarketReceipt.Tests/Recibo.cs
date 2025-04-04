@@ -5,6 +5,14 @@ public record DescuentoPorPorcentaje(
     decimal PorcentajeDescuento,
     TipoDescuento TipoDescuento);
 
+public record DescuentoPagaXLlevaY(
+    string Producto,
+    int UnidadesAComprar,
+    int UnidadesGratis,
+    TipoDescuento TipoDescuento)
+{
+}
+
 public  enum TipoDescuento
 {
     Porcentaje,
@@ -12,9 +20,8 @@ public  enum TipoDescuento
 }
 public class Recibo
 {
-   
-
     private readonly Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> _descuentosPagaXLlevaY;
+    private readonly DescuentoPagaXLlevaY[] _descuentoPagaXLlevaIes = [];
     private readonly DescuentoPorPorcentaje[] _descuentosGenerales = [];
 
 
@@ -43,9 +50,11 @@ public class Recibo
         _descuentosPagaXLlevaY = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
-    public Recibo(Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> descuentosPagaXLlevaY)
+    public Recibo(Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> descuentosPagaXLlevaY,
+        DescuentoPagaXLlevaY[] descuentoPagaXLlevaIes)
     {
         _descuentosPagaXLlevaY = descuentosPagaXLlevaY;
+        _descuentoPagaXLlevaIes = descuentoPagaXLlevaIes;
         new Dictionary<string, decimal>();
     }
 
@@ -64,7 +73,7 @@ public class Recibo
         //TODO: Por cada tipo de descuento está saliendo un condicional
      
         _descuentosGenerales
-            .Where(d => d.TipoDescuento == TipoDescuento.Porcentaje && d.Producto == producto)
+            .Where(d => d.Producto == producto)
             .ToList()
             .ForEach(d =>
             {
@@ -72,14 +81,27 @@ public class Recibo
             });
         
 
-        if (_descuentosPagaXLlevaY.TryGetValue(producto, out var descuento2X1))
-        {
-            var cantidadComprada = _productosFacturados.Count(x => x == producto);
-            if(cantidadComprada % descuento2X1.UnidadesAComprar == 0)
-            {
-                _descuentosAplicados.Add((producto, (TipoDescuento.LlevaXPagaY, 1)));
-            }
-        }
+        // if (_descuentosPagaXLlevaY.TryGetValue(producto, out var descuento2X1))
+        // {
+        //     var cantidadComprada = _productosFacturados.Count(x => x == producto);
+        //     if(cantidadComprada % descuento2X1.UnidadesAComprar == 0)
+        //     {
+        //         _descuentosAplicados.Add((producto, (TipoDescuento.LlevaXPagaY, 1)));
+        //     }
+        // }
+        
+        _descuentoPagaXLlevaIes
+            .Where(x => x.Producto == producto)
+            .ToList()
+            .ForEach(d =>
+                {
+                    var cantidadComprada = _productosFacturados.Count(x => x == producto);
+                    if(cantidadComprada % d.UnidadesAComprar == 0)
+                    {
+                        _descuentosAplicados.Add((producto, (d.TipoDescuento, 1)));
+                    }
+                }
+                );
     }
 
     public override string ToString()
