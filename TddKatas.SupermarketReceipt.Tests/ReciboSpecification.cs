@@ -15,7 +15,7 @@ public class ReciboSpecification
                      TOTAL A PAGAR: $ 3.000
                      """, recibo.ToString());
     }
-    
+
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillo_totalizar_en_6000()
     {
@@ -52,7 +52,7 @@ public class ReciboSpecification
         var recibo = new Recibo();
 
         Action accionAdicionar = () => recibo.Adicionar("Cerveza");
-        
+
         var ex = Assert.Throws<ArgumentException>(accionAdicionar);
         Assert.Equal("El producto Cerveza no existe en el sistema.", ex.Message);
     }
@@ -63,7 +63,7 @@ public class ReciboSpecification
         var recibo = new Recibo();
 
         Action accionAdicionar = () => recibo.Adicionar("");
-        
+
         var ex = Assert.Throws<ArgumentException>(accionAdicionar);
         Assert.Equal("Debe ingresar un producto.", ex.Message);
     }
@@ -103,7 +103,7 @@ public class ReciboSpecification
                      TOTAL A PAGAR: $ 2.700
                      """, recibo.ToString());
     }
-    
+
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_un_cepillo_y_jabon_y_ambos_tienen_porcentaje_de_descuento()
     {
@@ -136,10 +136,10 @@ public class ReciboSpecification
             {"Cepillo de dientes", 0.1m}
         };
         var recibo = new Recibo(descuentos);
-    
+
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Cepillo de dientes");
-    
+
         Assert.Equal("""
                      Factura
                      Cepillo de dientes: $ 3.000
@@ -150,7 +150,7 @@ public class ReciboSpecification
                      TOTAL A PAGAR: $ 5.400
                      """, recibo.ToString());
     }
-    
+
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_y_hay_descuento_2X1_Paga_3000()
     {
@@ -158,18 +158,15 @@ public class ReciboSpecification
         {
             {
                 "Cepillo de dientes",
-                ( 2,  1)
+                (2, 1)
             }
         };
-        
 
-     
-        
         var recibo = new Recibo(descuento2X1);
-    
+
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Cepillo de dientes");
-    
+
         Assert.Equal("""
                      Factura
                      Cepillo de dientes: $ 3.000
@@ -179,6 +176,62 @@ public class ReciboSpecification
                      TOTAL A PAGAR: $ 3.000
                      """, recibo.ToString());
     }
+
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_tres_cepillos_y_hay_descuento_2X1_regalan_1_y_Paga_6000()
+    {
+        var descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>
+        {
+            {
+                "Cepillo de dientes",
+                (2, 1)
+            }
+        };
+
+        var recibo = new Recibo(descuento2X1);
+
+        recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
+
+        Assert.Equal("""
+                     Factura
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     DESCUENTOS APLICADOS:
+                     Cepillo de dientes (2X1): -$ 3.000
+                     TOTAL A PAGAR: $ 6.000
+                     """, recibo.ToString());
+    }
     
-    
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_cuatro_cepillos_y_hay_descuento_2X1_regalan_2_y_Paga_6000()
+    {
+        var descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>
+        {
+            {
+                "Cepillo de dientes",
+                (2, 1)
+            }
+        };
+
+        var recibo = new Recibo(descuento2X1);
+
+        recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
+
+        Assert.Equal("""
+                     Factura
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     DESCUENTOS APLICADOS:
+                     Cepillo de dientes (2X1): -$ 3.000
+                     Cepillo de dientes (2X1): -$ 3.000
+                     TOTAL A PAGAR: $ 6.000
+                     """, recibo.ToString());
+    }
 }
