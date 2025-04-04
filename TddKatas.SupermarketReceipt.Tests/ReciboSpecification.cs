@@ -34,6 +34,15 @@ TOTAL FACTURA: $ 2.000", recibo.ToString());
         var ex = Assert.Throws<ArgumentException>(() => recibo.Adicionar("Cerveza"));
         Assert.Equal("El producto Cerveza no existe en el sistema.", ex.Message);
     }
+    
+    [Fact]
+    public void Debe_lanzar_excepcion_cuando_adiciono_un_producto_es_vacio()
+    {
+        var recibo = new Recibo();
+        
+        var ex = Assert.Throws<ArgumentException>(() => recibo.Adicionar(""));
+        Assert.Equal("Debe ingresar un producto.", ex.Message);
+    }
 
     
 }
