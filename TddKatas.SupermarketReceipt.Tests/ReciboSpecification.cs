@@ -10,8 +10,8 @@ public class ReciboSpecification
         recibo.Adicionar("Cepillo de dientes");
         
         Assert.Equal(@"Factura
-Cepillo de dientes: $3.000
-TOTAL FACTURA: $3.000", recibo.ToString());
+Cepillo de dientes: $ 3.000
+TOTAL FACTURA: $ 3.000", recibo.ToString());
     }
     
     [Fact]
@@ -22,8 +22,8 @@ TOTAL FACTURA: $3.000", recibo.ToString());
         recibo.Adicionar("Jabón");
         
         Assert.Equal(@"Factura
-Jabón: $2.000
-TOTAL FACTURA: $2.000", recibo.ToString());
+Jabón: $ 2.000
+TOTAL FACTURA: $ 2.000", recibo.ToString());
     }
 
     
@@ -32,6 +32,11 @@ TOTAL FACTURA: $2.000", recibo.ToString());
 public class Recibo
 {
     private string? _productoFacturado;
+    private Dictionary<string, int> _precios = new()
+    {
+        { "Cepillo de dientes", 3000 },
+        { "Jabón", 2000 }
+    };
 
     public void Adicionar(string? producto)
     {
@@ -42,8 +47,8 @@ public class Recibo
     {
         return $"""
                Factura
-               {_productoFacturado}: $3.000
-               TOTAL FACTURA: $3.000
+               {_productoFacturado}: {_precios[_productoFacturado]:C0}
+               TOTAL FACTURA: {_precios[_productoFacturado]:C0}
                """;
     }
 }
