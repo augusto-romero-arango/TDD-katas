@@ -151,5 +151,30 @@ public class ReciboSpecification
                      """, recibo.ToString());
     }
     
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_y_hay_descuento_2X1_Paga_3000()
+    {
+        var descuento2X1 = new
+        {
+            Producto = "Cepillo de dientes",
+            CantidadDeUnidadesParaAplicarPromo = 2,
+            CantidadDeUnidadesRegaladas = 1,
+        };
+        
+        var recibo = new Recibo(descuento2X1);
+    
+        recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
+    
+        Assert.Equal("""
+                     Factura
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     DESCUENTOS APLICADOS:
+                     Cepillo de dientes (2X1): -$ 3.000
+                     TOTAL A PAGAR: $ 3.000
+                     """, recibo.ToString());
+    }
+    
     
 }

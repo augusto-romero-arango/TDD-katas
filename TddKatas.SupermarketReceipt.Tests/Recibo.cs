@@ -24,6 +24,11 @@ public class Recibo
         _descuentos = descuentos;
     }
 
+    public Recibo(object descuento2X1)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Adicionar(string producto)
     {
         if (producto == "")
