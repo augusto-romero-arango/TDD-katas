@@ -154,12 +154,16 @@ public class ReciboSpecification
     [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_y_hay_descuento_2X1_Paga_3000()
     {
-        var descuento2X1 = new
+        var descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>
         {
-            Producto = "Cepillo de dientes",
-            CantidadDeUnidadesParaAplicarPromo = 2,
-            CantidadDeUnidadesRegaladas = 1,
+            {
+                "Cepillo de dientes",
+                ( 2,  1)
+            }
         };
+        
+
+     
         
         var recibo = new Recibo(descuento2X1);
     

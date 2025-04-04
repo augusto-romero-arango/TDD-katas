@@ -2,8 +2,15 @@ namespace TddKatas.SupermarketReceipt.Tests;
 
 public class Recibo
 {
+    private enum TipoDescuento
+    {
+        Porcentaje,
+        Lleva2Paga1
+    }
+
+    private readonly Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> _descuento2X1;
     private readonly List<string> _productosFacturados = new();
-    private readonly List<(string, decimal)> _descuentosAplicados = new();
+    private readonly List<(string, (TipoDescuento, decimal))> _descuentosAplicados = new();
 
     private readonly Dictionary<string, int> _precios = new()
     {
@@ -11,22 +18,25 @@ public class Recibo
         {"Jabón", 2000}
     };
 
-    private readonly Dictionary<String, decimal> _descuentos;
+    private readonly Dictionary<String, decimal> _descuentosPorPorcentaje;
 
 
     public Recibo()
     {
-        _descuentos = new Dictionary<string, decimal>();
+        _descuentosPorPorcentaje = new Dictionary<string, decimal>();
+        _descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
-    public Recibo(Dictionary<string, decimal> descuentos)
+    public Recibo(Dictionary<string, decimal> descuentosPorPorcentaje)
     {
-        _descuentos = descuentos;
+        _descuentosPorPorcentaje = descuentosPorPorcentaje;
+        _descuento2X1 = new Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)>();
     }
 
-    public Recibo(object descuento2X1)
+    public Recibo(Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> descuento2X1)
     {
-        throw new NotImplementedException();
+        _descuento2X1 = descuento2X1;
+        _descuentosPorPorcentaje = new Dictionary<string, decimal>();
     }
 
     public void Adicionar(string producto)
@@ -37,10 +47,19 @@ public class Recibo
         if (!_precios.ContainsKey(producto))
             throw new ArgumentException($"El producto {producto} no existe en el sistema.");
 
+        
         _productosFacturados.Add(producto);
 
-        if (_descuentos.TryGetValue(producto, out var descuento))
-            _descuentosAplicados.Add((producto, descuento));
+        if (_descuentosPorPorcentaje.TryGetValue(producto, out var descuento))
+            _descuentosAplicados.Add((producto, (TipoDescuento.Porcentaje, descuento)));
+
+        if (_descuento2X1.TryGetValue(producto, out var descuento2X1))
+        {
+            if(_productosFacturados.Count(x => x == producto) == descuento2X1.UnidadesAComprar)
+            {
+                _descuentosAplicados.Add((producto, (TipoDescuento.Lleva2Paga1, 1)));
+            }
+        }
     }
 
     public override string ToString()
@@ -61,7 +80,12 @@ public class Recibo
 
         var detalleDescuentos = _descuentosAplicados
             .Select(descuento =>
-                $"{descuento.Item1} ({descuento.Item2:P0}): {descuento.Item2 * -1 * _precios[descuento.Item1]:C0}"
+            {
+               string formatoDescuento = descuento.Item2.Item1 == TipoDescuento.Porcentaje ? $"{descuento.Item2.Item2:P0}" : "2X1";
+
+               return $"{descuento.Item1} ({formatoDescuento}): {descuento.Item2.Item2 * -1 * _precios[descuento.Item1]:C0}";
+            }
+                
             ).ToArray()
             .Aggregate((acumulado, detalle) => $"{acumulado}{Environment.NewLine}{detalle}");
         
@@ -95,7 +119,7 @@ public class Recibo
         {
             var precioTotal = _precios[d.Item1];
             var descuento = d.Item2;
-            return (int) (precioTotal *  descuento);
+            return (int) (precioTotal *  descuento.Item2);
         }).Sum();
     }
 }
