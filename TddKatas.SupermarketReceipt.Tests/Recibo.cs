@@ -10,7 +10,7 @@ public class Recibo
 
     private readonly Dictionary<string, (int UnidadesAComprar, int UnidadesGratis)> _descuentosPagaXLlevaY;
     private readonly List<string> _productosFacturados = new();
-    private readonly List<(string, (TipoDescuento, decimal))> _descuentosAplicados = new();
+    private readonly List<(string Producto, (TipoDescuento TipoDescuento, decimal PorcentajeDescuento) Descuento)> _descuentosAplicados = [];
 
     private readonly Dictionary<string, int> _precios = new()
     {
@@ -86,10 +86,9 @@ public class Recibo
             .Select(descuento =>
             { 
                 //TODO: Dependiendo del tipo de descunento se debe aplicar un formato diferente
-                //TODO: El nombre de los ítems de las tuplas no son descriptivos
-               string formatoDescuento = descuento.Item2.Item1 == TipoDescuento.Porcentaje ? $"{descuento.Item2.Item2:P0}" : "2X1";
+               string formatoDescuento = descuento.Descuento.TipoDescuento == TipoDescuento.Porcentaje ? $"{descuento.Descuento.PorcentajeDescuento:P0}" : "2X1";
 
-               return $"{descuento.Item1} ({formatoDescuento}): {descuento.Item2.Item2 * -1 * _precios[descuento.Item1]:C0}";
+               return $"{descuento.Producto} ({formatoDescuento}): {descuento.Descuento.PorcentajeDescuento * -1 * _precios[descuento.Producto]:C0}";
             }
                 
             ).ToArray()
@@ -123,10 +122,9 @@ public class Recibo
     {
         return _descuentosAplicados.Select(d =>
         {
-            //Los nombres Item1 e Item2 de las tuplas no son descriptivos
-            var precioTotal = _precios[d.Item1];
-            var descuento = d.Item2;
-            return (int) (precioTotal *  descuento.Item2);
+            var precioTotal = _precios[d.Producto];
+            var descuento = d.Descuento;
+            return (int) (precioTotal *  descuento.PorcentajeDescuento);
         }).Sum();
     }
 }
