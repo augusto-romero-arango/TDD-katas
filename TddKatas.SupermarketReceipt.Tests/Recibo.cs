@@ -8,6 +8,8 @@ public record DescuentoPorPorcentaje(
 public interface IDescuento
 {
     TipoDescuento TipoDescuento { get; }
+    string Producto { get; }
+    
 }
 
 public record DescuentoPagaXLlevaY(
@@ -39,17 +41,17 @@ public class Recibo
         {"Jabón", 2000}
     };
 
-    public Recibo(IDescuento[] descuentos = null)
+    public Recibo(IDescuento[]? descuentos = null)
     {
-        if (descuentos != null)
+        if (descuentos == null) 
+            return;
+        
+        foreach (var descuento in descuentos)
         {
-            foreach (var descuento in descuentos)
-            {
-                if (descuento.TipoDescuento == TipoDescuento.LlevaXPagaY)
-                    _descuentoPagaXLlevaIes.Add(descuento);
-                else
-                    _descuentosGenerales.Add(descuento);
-            }
+            if (descuento.TipoDescuento == TipoDescuento.LlevaXPagaY)
+                _descuentoPagaXLlevaIes.Add(descuento);
+            else
+                _descuentosGenerales.Add(descuento);
         }
     }
 
@@ -65,6 +67,11 @@ public class Recibo
 
         _productosFacturados.Add(producto);
 
+        AplicarDescuento(producto);
+    }
+
+    private void AplicarDescuento(string producto)
+    {
         //TODO: La lógica de aplciación de desceuntos está an el método Adicionar
         //TODO: Por cada tipo de descuento está saliendo un condicional
 
