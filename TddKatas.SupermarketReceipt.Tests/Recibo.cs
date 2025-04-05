@@ -24,7 +24,6 @@ public interface IDescuento
 public record DescuentoPagaXLlevaY(
     string Producto,
     int UnidadesAComprar,
-    int UnidadesGratis,
     TipoDescuento TipoDescuento) : IDescuento
 {
     public (string Producto, (TipoDescuento TipoDescuento, decimal PorcentajeDescuento))? CrearDescuentoAAplicar(
@@ -48,8 +47,7 @@ public enum TipoDescuento
 public class Recibo
 {
     private readonly IDescuento[]? _descuentos = [];
-    private readonly List<IDescuento> _descuentoPagaXLlevaIes = [];
-    private readonly List<IDescuento> _descuentosPorPorcentaje = [];
+  
 
 
     private readonly List<string> _productosFacturados = new();
@@ -70,13 +68,7 @@ public class Recibo
 
         _descuentos = descuentos;
 
-        foreach (var descuento in descuentos)
-        {
-            if (descuento.TipoDescuento == TipoDescuento.LlevaXPagaY)
-                _descuentoPagaXLlevaIes.Add(descuento);
-            else
-                _descuentosPorPorcentaje.Add(descuento);
-        }
+      
     }
 
 
