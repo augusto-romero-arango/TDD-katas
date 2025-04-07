@@ -303,6 +303,28 @@ public class ReciboSpecification
     }
     
     [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_2_cepillos_y_hay_descuento_3_cepillos_no_aplica_promocion()
+    {
+ 
+        IDescuento[] descuentos =
+        [
+            new DescuentoCompraXPorYDinero("Cepillo de dientes", 3, 7_000)
+        ];
+
+        var recibo = new Recibo(descuentos);
+
+        ComprarPorCantidades(recibo, 2, "Cepillo de dientes");
+
+        var reciboGeneado = recibo.ToString();
+        Assert.Equal($"""
+                      {Recibo.TextoEncabezadoRecibo}
+                      Cepillo de dientes: $ 3.000
+                      Cepillo de dientes: $ 3.000
+                      {Recibo.TextoTotalAPagar} $ 6.000
+                      """, reciboGeneado);
+    }
+    
+    [Fact]
     public void Debe_emitir_un_recibo_cuando_adiciono_6_cepillos_y_hay_descuento_3_cepillos_por_7000_total_a_pagar_14000()
     {
  
