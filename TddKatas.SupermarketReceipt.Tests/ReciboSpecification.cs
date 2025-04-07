@@ -11,10 +11,10 @@ public class ReciboSpecification
 
         recibo.Adicionar("Cepillo de dientes");
 
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
-                     TOTAL A PAGAR: $ 3.000
+                     {Recibo.TextoTotalAPagar} $ 3.000
                      """, recibo.ToString());
     }
 
@@ -25,11 +25,11 @@ public class ReciboSpecification
 
         ComprarPorCantidades(recibo, 2, "Cepillo de dientes");
         
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
-                     TOTAL A PAGAR: $ 6.000
+                     {Recibo.TextoTotalAPagar} $ 6.000
                      """, recibo.ToString());
     }
 
@@ -40,10 +40,10 @@ public class ReciboSpecification
 
         recibo.Adicionar("Jabón");
 
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Jabón: $ 2.000
-                     TOTAL A PAGAR: $ 2.000
+                     {Recibo.TextoTotalAPagar} $ 2.000
                      """, recibo.ToString());
     }
 
@@ -78,11 +78,11 @@ public class ReciboSpecification
         recibo.Adicionar("Cepillo de dientes");
         recibo.Adicionar("Jabón");
 
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Jabón: $ 2.000
-                     TOTAL A PAGAR: $ 5.000
+                     {Recibo.TextoTotalAPagar} $ 5.000
                      """, recibo.ToString());
     }
 
@@ -97,12 +97,12 @@ public class ReciboSpecification
 
         recibo.Adicionar("Cepillo de dientes");
 
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (10 %): -$ 300
-                     TOTAL A PAGAR: $ 2.700
+                     {Recibo.TextoTotalAPagar} $ 2.700
                      """, recibo.ToString());
     }
 
@@ -121,14 +121,14 @@ public class ReciboSpecification
         recibo.Adicionar("Jabón");
 
         var reciboGenerado = recibo.ToString();
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Jabón: $ 2.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (10 %): -$ 300
                      Jabón (20 %): -$ 400
-                     TOTAL A PAGAR: $ 4.300
+                     {Recibo.TextoTotalAPagar} $ 4.300
                      """, reciboGenerado);
     }
 
@@ -143,14 +143,14 @@ public class ReciboSpecification
         
         ComprarPorCantidades(recibo, 2, "Cepillo de dientes");
      
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (10 %): -$ 300
                      Cepillo de dientes (10 %): -$ 300
-                     TOTAL A PAGAR: $ 5.400
+                     {Recibo.TextoTotalAPagar} $ 5.400
                      """, recibo.ToString());
     }
 
@@ -165,13 +165,13 @@ public class ReciboSpecification
 
         ComprarPorCantidades(recibo, 2, "Cepillo de dientes");
 
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (2X1): -$ 3.000
-                     TOTAL A PAGAR: $ 3.000
+                     {Recibo.TextoTotalAPagar} $ 3.000
                      """, recibo.ToString());
     }
 
@@ -186,14 +186,14 @@ public class ReciboSpecification
 
         ComprarPorCantidades(recibo, 3, "Cepillo de dientes");
 
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (2X1): -$ 3.000
-                     TOTAL A PAGAR: $ 6.000
+                     {Recibo.TextoTotalAPagar} $ 6.000
                      """, recibo.ToString());
     }
     
@@ -211,16 +211,16 @@ public class ReciboSpecification
         ComprarPorCantidades(recibo, 4, "Cepillo de dientes");
  
         var reciboGeneado = recibo.ToString();
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (2X1): -$ 3.000
                      Cepillo de dientes (2X1): -$ 3.000
-                     TOTAL A PAGAR: $ 6.000
+                     {Recibo.TextoTotalAPagar} $ 6.000
                      """, reciboGeneado);
     }
     
@@ -238,14 +238,14 @@ public class ReciboSpecification
         ComprarPorCantidades(recibo, 3, "Cepillo de dientes");
 
         var reciboGeneado = recibo.ToString();
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (3X2): -$ 3.000
-                     TOTAL A PAGAR: $ 6.000
+                     {Recibo.TextoTotalAPagar} $ 6.000
                      """, reciboGeneado);
     }
     
@@ -263,17 +263,17 @@ public class ReciboSpecification
         ComprarPorCantidades(recibo, 5, "Cepillo de dientes");
 
         var reciboGeneado = recibo.ToString();
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (5X3): -$ 3.000
                      Cepillo de dientes (5X3): -$ 3.000
-                     TOTAL A PAGAR: $ 9.000
+                     {Recibo.TextoTotalAPagar} $ 9.000
                      """, reciboGeneado);
     }
     
@@ -291,14 +291,14 @@ public class ReciboSpecification
         ComprarPorCantidades(recibo, 3, "Cepillo de dientes");
 
         var reciboGeneado = recibo.ToString();
-        Assert.Equal("""
-                     Factura
+        Assert.Equal($"""
+                     {Recibo.TextoEncabezadoRecibo}
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
                      Cepillo de dientes: $ 3.000
-                     DESCUENTOS APLICADOS:
+                     {Recibo.TextoDescuentosAplicados}
                      Cepillo de dientes (Combo 3): -$ 2.000
-                     TOTAL A PAGAR: $ 7.000
+                     {Recibo.TextoTotalAPagar} $ 7.000
                      """, reciboGeneado);
     }
 

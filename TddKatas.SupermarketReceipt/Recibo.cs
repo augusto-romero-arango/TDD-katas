@@ -4,6 +4,10 @@ namespace TddKatas.SupermarketReceipt;
 
 public class Recibo
 {
+    public const string TextoDescuentosAplicados = "DESCUENTOS APLICADOS:";
+    public const string TextoTotalAPagar = "TOTAL A PAGAR:";
+    public const string TextoEncabezadoRecibo = "Factura";
+
     private readonly IDescuento[] _descuentos = [];
 
     private readonly List<string> _productosFacturados = [];
@@ -21,24 +25,20 @@ public class Recibo
     }
     public void Adicionar(string producto)
     {
-        if (producto == "")
-            throw new ArgumentException("Debe ingresar un producto.");
-
-        if (!_listaPrecios.Hay(producto))
-            throw new ArgumentException($"El producto {producto} no existe en el sistema.");
-
+        LanzarExcepcionSiProductoSolicitadoEsIncorrecto(producto);
 
         _productosFacturados.Add(producto);
 
         AplicarDescuento(producto);
     }
 
+    
     public override string ToString()
     {
         return $"""
-                Factura
+                {TextoEncabezadoRecibo}
                 {CrearDetalleProductosDelRecibo()}{CrearDetallesDescuentos()}
-                TOTAL A PAGAR: {CalcularTotalRecibo():C0}
+                {TextoTotalAPagar} {CalcularTotalRecibo():C0}
                 """;
     }
     
@@ -62,7 +62,7 @@ public class Recibo
         if (_descuentosAplicados.Count == 0)
             return string.Empty;
 
-        var encabezadoDescuentos = $"{Environment.NewLine}DESCUENTOS APLICADOS:{Environment.NewLine}";
+        var encabezadoDescuentos = $"{Environment.NewLine}{TextoDescuentosAplicados}{Environment.NewLine}";
 
         var detalleDescuentos = _descuentosAplicados
             .Select(descuento => descuento.ToString())
@@ -99,4 +99,14 @@ public class Recibo
             .Select(d => d.ValorDescuento * -1)
             .Sum();
     }
+    
+    private void LanzarExcepcionSiProductoSolicitadoEsIncorrecto(string producto)
+    {
+        if (producto == "")
+            throw new ArgumentException("Debe ingresar un producto.");
+
+        if (!_listaPrecios.Hay(producto))
+            throw new ArgumentException($"El producto {producto} no existe en el sistema.");
+    }
+
 }
