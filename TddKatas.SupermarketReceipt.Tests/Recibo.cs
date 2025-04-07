@@ -1,6 +1,10 @@
 namespace TddKatas.SupermarketReceipt.Tests;
 
-public record DescuentoAplicado(string Producto, TipoDescuento TipoDescuento, decimal PorcentajeDescuento);
+public record DescuentoAplicado(
+    string Producto,
+    TipoDescuento TipoDescuento,
+    decimal PorcentajeDescuento,
+    string FormatoDescuento);
 
 public interface IDescuento
 {
@@ -18,7 +22,7 @@ public record DescuentoPorPorcentaje(
 {
     public DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada)
     {
-        return new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento);
+        return new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento, $"{PorcentajeDescuento:P0}");
     }
 }
 
@@ -31,7 +35,7 @@ public record DescuentoPagaXLlevaY(
     {
         if (cantidadComprada % UnidadesAComprar == 0)
         {
-            return new DescuentoAplicado(producto, TipoDescuento, 1);
+            return new DescuentoAplicado(producto, TipoDescuento, 1, "2X1");
         }
 
         //TODO: No me gusta retornar null
@@ -118,22 +122,10 @@ public class Recibo
         var encabezadoDescuentos = $"{Environment.NewLine}DESCUENTOS APLICADOS:{Environment.NewLine}";
 
         var detalleDescuentos = _descuentosAplicadosCorrecto
-            .Select(descuento =>
-                {
-                    //TODO: Dependiendo del tipo de descunento se debe aplicar un formato diferente
-                    string formatoDescuento = descuento.TipoDescuento == TipoDescuento.Porcentaje
-                        ? $"{descuento.PorcentajeDescuento:P0}"
-                        : "2X1";
-
-                    return
-                        $"{descuento.Producto} ({formatoDescuento}): {descuento.PorcentajeDescuento * -1 * _precios[descuento.Producto]:C0}";
-                }
-            ).ToArray()
+            .Select(descuento => $"{descuento.Producto} ({descuento.FormatoDescuento}): {descuento.PorcentajeDescuento * -1 * _precios[descuento.Producto]:C0}").ToArray()
             .Aggregate((acumulado, detalle) => $"{acumulado}{Environment.NewLine}{detalle}");
 
         return encabezadoDescuentos + detalleDescuentos;
-        
-    
     }
 
     private string CrearDetalleProductosDelRecibo()
