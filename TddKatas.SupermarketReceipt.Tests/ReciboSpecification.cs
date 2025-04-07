@@ -274,6 +274,31 @@ public class ReciboSpecification
                      TOTAL A PAGAR: $ 9.000
                      """, reciboGeneado);
     }
+    
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_3_cepillos_y_hay_descuento_3_cepillos_por_7000()
+    {
+ 
+        IDescuento[] descuentos =
+        [
+            new DescuentoCompraXPorYDinero("Cepillo de dientes", 3, 7_000)
+        ];
+
+        var recibo = new Recibo(descuentos);
+
+        ComprarPorCantidades(recibo, 3, "Cepillo de dientes");
+
+        var reciboGeneado = recibo.ToString();
+        Assert.Equal("""
+                     Factura
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     DESCUENTOS APLICADOS:
+                     Cepillo de dientes (Combo 3): -$ 2.000
+                     TOTAL A PAGAR: $ 7.000
+                     """, reciboGeneado);
+    }
 
     private static void ComprarPorCantidades(Recibo recibo, int cantidad, string producto)
     {
@@ -284,3 +309,4 @@ public class ReciboSpecification
         
     }
 }
+

@@ -21,6 +21,18 @@ public interface IDescuento
     DescuentoAplicado[] DescuentoAAplicar(string producto, int cantidadComprada, int precio);
 }
 
+public record DescuentoCompraXPorYDinero(
+    string Producto,
+    int UnidadesAComprar,
+    int ValorAPagar,
+    TipoDescuento TipoDescuento = TipoDescuento.CompraXPorYDinero) : IDescuento
+{
+    public DescuentoAplicado[] DescuentoAAplicar(string producto, int cantidadComprada, int precio)
+    {
+        throw new NotImplementedException();
+    }
+}
+
 public record DescuentoPorPorcentaje(
     string Producto,
     decimal PorcentajeDescuento,
@@ -28,7 +40,10 @@ public record DescuentoPorPorcentaje(
 {
     public DescuentoAplicado[] DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
-        return [new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento, $"{PorcentajeDescuento:P0}", precio)];
+        return
+        [
+            new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento, $"{PorcentajeDescuento:P0}", precio)
+        ];
     }
 }
 
@@ -40,21 +55,22 @@ public record DescuentoPagaXLlevaY(
 {
     public DescuentoAplicado[] DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
-        if (cantidadComprada % UnidadesAComprar != 0) 
+        if (cantidadComprada % UnidadesAComprar != 0)
             return [];
-        
+
         return Enumerable.Repeat(
-                new DescuentoAplicado(producto, TipoDescuento, 1, $"{UnidadesAComprar}X{UnidadesAComprar - UnidadesGratis}",
+                new DescuentoAplicado(producto, TipoDescuento, 1,
+                    $"{UnidadesAComprar}X{UnidadesAComprar - UnidadesGratis}",
                     precio), UnidadesGratis)
             .ToArray();
-
     }
 }
 
 public enum TipoDescuento
 {
     Porcentaje,
-    LlevaXPagaY
+    LlevaXPagaY,
+    CompraXPorYDinero
 }
 
 public class Recibo
@@ -66,7 +82,7 @@ public class Recibo
     private readonly List<DescuentoAplicado>
         _descuentosAplicados = [];
 
-    
+
     private readonly Dictionary<string, int> _precios = new()
     {
         {"Cepillo de dientes", 3000},
@@ -99,15 +115,15 @@ public class Recibo
     private void AplicarDescuento(string producto)
     {
         var descuentoAAplicarONull = _descuentos.FirstOrDefault(d => d.Producto == producto);
-        
+
         if (descuentoAAplicarONull == null)
             return;
 
         var cantidadComprada = _productosFacturados.Count(p => p == producto);
-        
+
         var descuentoAplicado = descuentoAAplicarONull
             .DescuentoAAplicar(producto, cantidadComprada, _precios[producto]);
-        
+
         _descuentosAplicados.AddRange(descuentoAplicado);
     }
 
