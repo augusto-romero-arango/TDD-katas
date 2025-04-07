@@ -5,11 +5,11 @@ public record DescuentoAplicado(
     TipoDescuento TipoDescuento,
     decimal PorcentajeDescuento,
     string FormatoDescuento,
-    int Precio)
+    int Precio, int ValorDescuento)
 {
     public override string ToString()
     {
-        return $"{Producto} ({FormatoDescuento}): {PorcentajeDescuento * -1 * Precio:C0}";
+        return $"{Producto} ({FormatoDescuento}): {ValorDescuento:C0}";
     }
 }
 
@@ -29,7 +29,16 @@ public record DescuentoCompraXPorYDinero(
 {
     public DescuentoAplicado[] DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
-        throw new NotImplementedException();
+        if (UnidadesAComprar == cantidadComprada)
+        {
+            return
+            [
+                new DescuentoAplicado(Producto, TipoDescuento, 0, $"Combo {UnidadesAComprar}", precio,
+                    ValorAPagar - (precio * UnidadesAComprar))
+            ];
+        }
+
+        return [];
     }
 }
 
@@ -42,7 +51,7 @@ public record DescuentoPorPorcentaje(
     {
         return
         [
-            new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento, $"{PorcentajeDescuento:P0}", precio)
+            new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento, $"{PorcentajeDescuento:P0}", precio, (int)(PorcentajeDescuento * -1m * precio))
         ];
     }
 }
@@ -61,7 +70,8 @@ public record DescuentoPagaXLlevaY(
         return Enumerable.Repeat(
                 new DescuentoAplicado(producto, TipoDescuento, 1,
                     $"{UnidadesAComprar}X{UnidadesAComprar - UnidadesGratis}",
-                    precio), UnidadesGratis)
+                    precio, precio * -1), 
+                UnidadesGratis)
             .ToArray();
     }
 }
@@ -175,7 +185,7 @@ public class Recibo
     private int CalcularTotalDescuentos()
     {
         return _descuentosAplicados
-            .Select(d => (int) (_precios[d.Producto] * d.PorcentajeDescuento))
+            .Select(d => d.ValorDescuento * -1)
             .Sum();
     }
 }
