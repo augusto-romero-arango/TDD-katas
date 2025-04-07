@@ -158,7 +158,7 @@ public class ReciboSpecification
     public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_y_hay_descuento_2X1_Paga_3000()
     {
         IDescuento[] descuentosPagaXLlevaY = {
-            new DescuentoPagaXLlevaY("Cepillo de dientes", 2)
+            new DescuentoPagaXLlevaY("Cepillo de dientes", 2, 1)
         };
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
@@ -180,7 +180,7 @@ public class ReciboSpecification
     public void Debe_emitir_un_recibo_cuando_adiciono_tres_cepillos_y_hay_descuento_2X1_regalan_1_y_Paga_6000()
     {
         IDescuento[] descuentosPagaXLlevaY = {
-            new DescuentoPagaXLlevaY("Cepillo de dientes", 2)
+            new DescuentoPagaXLlevaY("Cepillo de dientes", 2, 1)
         };
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
@@ -206,7 +206,7 @@ public class ReciboSpecification
  
         IDescuento[] descuentosPagaXLlevaY =
         [
-            new DescuentoPagaXLlevaY("Cepillo de dientes", 2)
+            new DescuentoPagaXLlevaY("Cepillo de dientes", 2, 1)
         ];
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
@@ -226,6 +226,33 @@ public class ReciboSpecification
                      DESCUENTOS APLICADOS:
                      Cepillo de dientes (2X1): -$ 3.000
                      Cepillo de dientes (2X1): -$ 3.000
+                     TOTAL A PAGAR: $ 6.000
+                     """, reciboGeneado);
+    }
+    
+    [Fact]
+    public void Debe_emitir_un_recibo_cuando_adiciono_tres_cepillos_y_hay_descuento_3X2_regalan_1_y_Paga_6000()
+    {
+ 
+        IDescuento[] descuentosPagaXLlevaY =
+        [
+            new DescuentoPagaXLlevaY("Cepillo de dientes", 3, 1)
+        ];
+
+        var recibo = new Recibo(descuentosPagaXLlevaY);
+
+        recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
+        recibo.Adicionar("Cepillo de dientes");
+
+        var reciboGeneado = recibo.ToString();
+        Assert.Equal("""
+                     Factura
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     Cepillo de dientes: $ 3.000
+                     DESCUENTOS APLICADOS:
+                     Cepillo de dientes (3X2): -$ 3.000
                      TOTAL A PAGAR: $ 6.000
                      """, reciboGeneado);
     }

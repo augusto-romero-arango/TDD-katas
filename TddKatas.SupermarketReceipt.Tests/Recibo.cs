@@ -35,6 +35,7 @@ public record DescuentoPorPorcentaje(
 public record DescuentoPagaXLlevaY(
     string Producto,
     int UnidadesAComprar,
+    int UnidadesGratis,
     TipoDescuento TipoDescuento = TipoDescuento.LlevaXPagaY) : IDescuento
 {
     public DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada, int precio)
