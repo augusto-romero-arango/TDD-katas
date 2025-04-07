@@ -2,10 +2,8 @@ namespace TddKatas.SupermarketReceipt.Tests;
 
 public record DescuentoAplicado(
     string Producto,
-    TipoDescuento TipoDescuento,
-    decimal PorcentajeDescuento,
-    string FormatoDescuento,
-    int Precio, int ValorDescuento)
+    string FormatoDescuento, 
+    int ValorDescuento)
 {
     public override string ToString()
     {
@@ -17,7 +15,6 @@ public interface IDescuento
 {
     TipoDescuento TipoDescuento { get; }
     string Producto { get; }
-
     DescuentoAplicado[] DescuentoAAplicar(string producto, int cantidadComprada, int precio);
 }
 
@@ -33,7 +30,7 @@ public record DescuentoCompraXPorYDinero(
         {
             return
             [
-                new DescuentoAplicado(Producto, TipoDescuento, 0, $"Combo {UnidadesAComprar}", precio,
+                new DescuentoAplicado(Producto, $"Combo {UnidadesAComprar}",
                     ValorAPagar - (precio * UnidadesAComprar))
             ];
         }
@@ -51,7 +48,7 @@ public record DescuentoPorPorcentaje(
     {
         return
         [
-            new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento, $"{PorcentajeDescuento:P0}", precio, (int)(PorcentajeDescuento * -1m * precio))
+            new DescuentoAplicado(Producto, $"{PorcentajeDescuento:P0}", (int)(PorcentajeDescuento * -1m * precio))
         ];
     }
 }
@@ -68,9 +65,8 @@ public record DescuentoPagaXLlevaY(
             return [];
 
         return Enumerable.Repeat(
-                new DescuentoAplicado(producto, TipoDescuento, 1,
-                    $"{UnidadesAComprar}X{UnidadesAComprar - UnidadesGratis}",
-                    precio, precio * -1), 
+                new DescuentoAplicado(producto,
+                    $"{UnidadesAComprar}X{UnidadesAComprar - UnidadesGratis}", precio * -1), 
                 UnidadesGratis)
             .ToArray();
     }
