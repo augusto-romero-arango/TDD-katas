@@ -1,4 +1,4 @@
-namespace TddKatas.SupermarketReceipt.Descuentos;
+namespace TddKatas.SupermarketReceipt;
 
 public record DescuentoAplicado(
     string Producto,

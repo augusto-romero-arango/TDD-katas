@@ -3,8 +3,7 @@ namespace TddKatas.SupermarketReceipt.Descuentos;
 public record DescuentoCompraXPorYDinero(
     string Producto,
     int UnidadesAComprar,
-    int ValorAPagar,
-    TipoDescuento TipoDescuento = TipoDescuento.CompraXPorYDinero) : IDescuento
+    int ValorAPagar) : IDescuento
 {
     public DescuentoAplicado[] DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
