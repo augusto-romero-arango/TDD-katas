@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TddKatas.SupermarketReceipt.Tests", "TddKatas.SupermarketReceipt.Tests\TddKatas.SupermarketReceipt.Tests.csproj", "{97505994-EAF5-418C-B04B-44CF5243F0D7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SupermarketReceipt", "SupermarketReceipt", "{915FAFDF-F245-449D-95A3-384E1F0846D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TddKatas.SupermarketReceipt", "TddKatas.SupermarketReceipt\TddKatas.SupermarketReceipt.csproj", "{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{97505994-EAF5-418C-B04B-44CF5243F0D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97505994-EAF5-418C-B04B-44CF5243F0D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97505994-EAF5-418C-B04B-44CF5243F0D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{97505994-EAF5-418C-B04B-44CF5243F0D7} = {915FAFDF-F245-449D-95A3-384E1F0846D8}
+		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA} = {915FAFDF-F245-449D-95A3-384E1F0846D8}
 	EndGlobalSection
 EndGlobal

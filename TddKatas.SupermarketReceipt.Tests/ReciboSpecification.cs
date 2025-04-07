@@ -1,4 +1,6 @@
-﻿namespace TddKatas.SupermarketReceipt.Tests;
+﻿using TddKatas.SupermarketReceipt.Descuentos;
+
+namespace TddKatas.SupermarketReceipt.Tests;
 
 public class ReciboSpecification
 {
