@@ -21,9 +21,8 @@ public class ReciboSpecification
     {
         var recibo = new Recibo();
 
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
-
+        ComprarPorCantidades(recibo, 2, "Cepillo de dientes");
+        
         Assert.Equal("""
                      Factura
                      Cepillo de dientes: $ 3.000
@@ -139,10 +138,9 @@ public class ReciboSpecification
             new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m)
         };
         var recibo = new Recibo(descuentosPorcentaje);
-
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
-
+        
+        ComprarPorCantidades(recibo, 2, "Cepillo de dientes");
+     
         Assert.Equal("""
                      Factura
                      Cepillo de dientes: $ 3.000
@@ -163,8 +161,7 @@ public class ReciboSpecification
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
 
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
+        ComprarPorCantidades(recibo, 2, "Cepillo de dientes");
 
         Assert.Equal("""
                      Factura
@@ -185,9 +182,7 @@ public class ReciboSpecification
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
 
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
+        ComprarPorCantidades(recibo, 3, "Cepillo de dientes");
 
         Assert.Equal("""
                      Factura
@@ -211,11 +206,8 @@ public class ReciboSpecification
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
 
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
-
+        ComprarPorCantidades(recibo, 4, "Cepillo de dientes");
+ 
         var reciboGeneado = recibo.ToString();
         Assert.Equal("""
                      Factura
@@ -241,9 +233,7 @@ public class ReciboSpecification
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
 
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
-        recibo.Adicionar("Cepillo de dientes");
+        ComprarPorCantidades(recibo, 3, "Cepillo de dientes");
 
         var reciboGeneado = recibo.ToString();
         Assert.Equal("""
@@ -255,5 +245,14 @@ public class ReciboSpecification
                      Cepillo de dientes (3X2): -$ 3.000
                      TOTAL A PAGAR: $ 6.000
                      """, reciboGeneado);
+    }
+
+    private static void ComprarPorCantidades(Recibo recibo, int cantidad, string producto)
+    {
+        for (var i = 0; i < cantidad; i++)
+        {
+            recibo.Adicionar(producto);
+        }
+        
     }
 }
