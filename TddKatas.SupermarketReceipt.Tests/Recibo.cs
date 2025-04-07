@@ -42,7 +42,7 @@ public record DescuentoPagaXLlevaY(
     {
         if (cantidadComprada % UnidadesAComprar == 0)
         {
-            return new DescuentoAplicado(producto, TipoDescuento, 1, "2X1", precio);
+            return new DescuentoAplicado(producto, TipoDescuento, 1, $"{UnidadesAComprar}X{UnidadesAComprar - UnidadesGratis}", precio);
         }
 
         //TODO: No me gusta retornar null
