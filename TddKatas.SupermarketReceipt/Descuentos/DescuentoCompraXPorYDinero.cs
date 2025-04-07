@@ -7,7 +7,7 @@ public record DescuentoCompraXPorYDinero(
 {
     public DescuentoAplicado[] DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
-        if (UnidadesAComprar == cantidadComprada)
+        if (cantidadComprada % UnidadesAComprar == 0)
         {
             return
             [
