@@ -7,7 +7,6 @@ public record DescuentoAplicado(
     string FormatoDescuento,
     int Precio)
 {
-    
     public override string ToString()
     {
         return $"{Producto} ({FormatoDescuento}): {PorcentajeDescuento * -1 * Precio:C0}";
@@ -25,7 +24,7 @@ public interface IDescuento
 public record DescuentoPorPorcentaje(
     string Producto,
     decimal PorcentajeDescuento,
-    TipoDescuento TipoDescuento) : IDescuento
+    TipoDescuento TipoDescuento = TipoDescuento.Porcentaje) : IDescuento
 {
     public DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
@@ -36,7 +35,7 @@ public record DescuentoPorPorcentaje(
 public record DescuentoPagaXLlevaY(
     string Producto,
     int UnidadesAComprar,
-    TipoDescuento TipoDescuento) : IDescuento
+    TipoDescuento TipoDescuento = TipoDescuento.LlevaXPagaY) : IDescuento
 {
     public DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
@@ -158,10 +157,8 @@ public class Recibo
 
     private int CalcularTotalDescuentos()
     {
-        return _descuentosAplicadosCorrecto.Select(d =>
-        {
-            var precioTotal = _precios[d.Producto];
-            return (int) (precioTotal * d.PorcentajeDescuento);
-        }).Sum();
+        return _descuentosAplicadosCorrecto
+            .Select(d => (int) (_precios[d.Producto] * d.PorcentajeDescuento))
+            .Sum();
     }
 }

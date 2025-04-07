@@ -90,7 +90,7 @@ public class ReciboSpecification
     {
  
         IDescuento[] descuentosPorcentaje = {
-            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje)
+            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m)
         };
         var recibo = new Recibo(descuentosPorcentaje);
 
@@ -110,8 +110,8 @@ public class ReciboSpecification
     {
 
         IDescuento[] descuentosPorcentaje = {
-            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje),
-            new DescuentoPorPorcentaje("Jabón", 0.2m, TipoDescuento.Porcentaje)
+            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m),
+            new DescuentoPorPorcentaje("Jabón", 0.2m)
         };
         
         var recibo = new Recibo(descuentosPorcentaje);
@@ -136,7 +136,7 @@ public class ReciboSpecification
     {
 
         IDescuento[] descuentosPorcentaje = {
-            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m, TipoDescuento.Porcentaje)
+            new DescuentoPorPorcentaje("Cepillo de dientes", 0.1m)
         };
         var recibo = new Recibo(descuentosPorcentaje);
 
@@ -158,7 +158,7 @@ public class ReciboSpecification
     public void Debe_emitir_un_recibo_cuando_adiciono_dos_cepillos_y_hay_descuento_2X1_Paga_3000()
     {
         IDescuento[] descuentosPagaXLlevaY = {
-            new DescuentoPagaXLlevaY("Cepillo de dientes", 2, TipoDescuento.LlevaXPagaY)
+            new DescuentoPagaXLlevaY("Cepillo de dientes", 2)
         };
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
@@ -180,7 +180,7 @@ public class ReciboSpecification
     public void Debe_emitir_un_recibo_cuando_adiciono_tres_cepillos_y_hay_descuento_2X1_regalan_1_y_Paga_6000()
     {
         IDescuento[] descuentosPagaXLlevaY = {
-            new DescuentoPagaXLlevaY("Cepillo de dientes", 2, TipoDescuento.LlevaXPagaY)
+            new DescuentoPagaXLlevaY("Cepillo de dientes", 2)
         };
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
@@ -206,7 +206,7 @@ public class ReciboSpecification
  
         IDescuento[] descuentosPagaXLlevaY =
         [
-            new DescuentoPagaXLlevaY("Cepillo de dientes", 2, TipoDescuento.LlevaXPagaY)
+            new DescuentoPagaXLlevaY("Cepillo de dientes", 2)
         ];
 
         var recibo = new Recibo(descuentosPagaXLlevaY);
