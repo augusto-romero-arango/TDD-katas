@@ -1,5 +1,14 @@
 namespace TddKatas.SupermarketReceipt.Tests;
 
+public interface IDescuento
+{
+    TipoDescuento TipoDescuento { get; }
+    string Producto { get; }
+
+    (string Producto, (TipoDescuento TipoDescuento, decimal PorcentajeDescuento))? CrearDescuentoAAplicar(
+        string producto, int cantidadComprada);
+}
+
 public record DescuentoPorPorcentaje(
     string Producto,
     decimal PorcentajeDescuento,
@@ -10,15 +19,6 @@ public record DescuentoPorPorcentaje(
     {
         return (Producto, (TipoDescuento, PorcentajeDescuento));
     }
-}
-
-public interface IDescuento
-{
-    TipoDescuento TipoDescuento { get; }
-    string Producto { get; }
-
-    (string Producto, (TipoDescuento TipoDescuento, decimal PorcentajeDescuento))? CrearDescuentoAAplicar(
-        string producto, int cantidadComprada);
 }
 
 public record DescuentoPagaXLlevaY(
@@ -34,6 +34,7 @@ public record DescuentoPagaXLlevaY(
             return (producto, (TipoDescuento, 1));
         }
 
+        //TODO: No me gusta retornar null
         return null;
     }
 }
@@ -46,9 +47,7 @@ public enum TipoDescuento
 
 public class Recibo
 {
-    private readonly IDescuento[]? _descuentos = [];
-  
-
+    private readonly IDescuento[] _descuentos = [];
 
     private readonly List<string> _productosFacturados = new();
 
@@ -67,8 +66,6 @@ public class Recibo
             return;
 
         _descuentos = descuentos;
-
-      
     }
 
 
@@ -88,38 +85,20 @@ public class Recibo
 
     private void AplicarDescuento(string producto)
     {
-        //TODO: Por cada tipo de descuento está saliendo un condicional
+        var descuentoAAplicarONull = _descuentos.FirstOrDefault(d => d.Producto == producto);
+        
+        if (descuentoAAplicarONull == null)
+            return;
 
-        var descuentoAAplicar = _descuentos
-            .Where(d => d.Producto == producto 
-                        && d.TipoDescuento is 
-                            TipoDescuento.Porcentaje 
-                            or TipoDescuento.LlevaXPagaY)
-            .ToList()
-            .Select(descuento =>
-                {
-                    if (descuento.TipoDescuento == TipoDescuento.Porcentaje)
-                    {
-                        return descuento.CrearDescuentoAAplicar(descuento.Producto, 0).Value;
-                    }
-
-                    if (descuento.TipoDescuento == TipoDescuento.LlevaXPagaY)
-                    {
-                        var crearDescuentoAAplicar =
-                            descuento.CrearDescuentoAAplicar(descuento.Producto, _productosFacturados.Count(p => p == producto));
-                        if (crearDescuentoAAplicar != null)
-                            return crearDescuentoAAplicar.Value;
-                    }
-                    // TODO: toca arreglar este caso
-                    return (null, (TipoDescuento.Porcentaje, 0));
-                }
-            ).ToList();
-
-        //TODO: Eliminar el caso null
-        var descuentosQuitandoElCasoNull = descuentoAAplicar.Where(p => p.Producto!= null).ToList();
-        _descuentosAplicados.AddRange(descuentosQuitandoElCasoNull);
-
- 
+        var cantidadComprada = _productosFacturados.Count(p => p == producto);
+        
+        var descuentoONull = descuentoAAplicarONull
+            .CrearDescuentoAAplicar(producto, cantidadComprada);
+        
+        if (descuentoONull == null)
+            return;
+        
+        _descuentosAplicados.Add(descuentoONull.Value);
     }
 
     public override string ToString()

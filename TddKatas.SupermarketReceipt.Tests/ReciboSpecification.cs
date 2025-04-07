@@ -51,7 +51,8 @@ public class ReciboSpecification
     {
         var recibo = new Recibo();
 
-        Action accionAdicionar = () => recibo.Adicionar("Cerveza");
+        Action accionAdicionar = () => recibo
+            .Adicionar("Cerveza");
 
         var ex = Assert.Throws<ArgumentException>(accionAdicionar);
         Assert.Equal("El producto Cerveza no existe en el sistema.", ex.Message);
