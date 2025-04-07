@@ -4,15 +4,22 @@ public record DescuentoAplicado(
     string Producto,
     TipoDescuento TipoDescuento,
     decimal PorcentajeDescuento,
-    string FormatoDescuento);
+    string FormatoDescuento,
+    int Precio)
+{
+    
+    public override string ToString()
+    {
+        return $"{Producto} ({FormatoDescuento}): {PorcentajeDescuento * -1 * Precio:C0}";
+    }
+}
 
 public interface IDescuento
 {
     TipoDescuento TipoDescuento { get; }
     string Producto { get; }
 
-    DescuentoAplicado? DescuentoAAplicar(
-        string producto, int cantidadComprada);
+    DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada, int precio);
 }
 
 public record DescuentoPorPorcentaje(
@@ -20,9 +27,9 @@ public record DescuentoPorPorcentaje(
     decimal PorcentajeDescuento,
     TipoDescuento TipoDescuento) : IDescuento
 {
-    public DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada)
+    public DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
-        return new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento, $"{PorcentajeDescuento:P0}");
+        return new DescuentoAplicado(Producto, TipoDescuento, PorcentajeDescuento, $"{PorcentajeDescuento:P0}", precio);
     }
 }
 
@@ -31,11 +38,11 @@ public record DescuentoPagaXLlevaY(
     int UnidadesAComprar,
     TipoDescuento TipoDescuento) : IDescuento
 {
-    public DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada)
+    public DescuentoAplicado? DescuentoAAplicar(string producto, int cantidadComprada, int precio)
     {
         if (cantidadComprada % UnidadesAComprar == 0)
         {
-            return new DescuentoAplicado(producto, TipoDescuento, 1, "2X1");
+            return new DescuentoAplicado(producto, TipoDescuento, 1, "2X1", precio);
         }
 
         //TODO: No me gusta retornar null
@@ -98,7 +105,7 @@ public class Recibo
         var cantidadComprada = _productosFacturados.Count(p => p == producto);
         
         var descuentoAplicado = descuentoAAplicarONull
-            .DescuentoAAplicar(producto, cantidadComprada);
+            .DescuentoAAplicar(producto, cantidadComprada, _precios[producto]);
         if (descuentoAplicado == null)
             return; 
         _descuentosAplicadosCorrecto.Add(descuentoAplicado);
@@ -115,14 +122,14 @@ public class Recibo
 
     private string CrearDetallesDescuentos()
     {
-        
         if (_descuentosAplicadosCorrecto.Count == 0)
             return string.Empty;
 
         var encabezadoDescuentos = $"{Environment.NewLine}DESCUENTOS APLICADOS:{Environment.NewLine}";
 
         var detalleDescuentos = _descuentosAplicadosCorrecto
-            .Select(descuento => $"{descuento.Producto} ({descuento.FormatoDescuento}): {descuento.PorcentajeDescuento * -1 * _precios[descuento.Producto]:C0}").ToArray()
+            .Select(descuento => descuento.ToString())
+            .ToArray()
             .Aggregate((acumulado, detalle) => $"{acumulado}{Environment.NewLine}{detalle}");
 
         return encabezadoDescuentos + detalleDescuentos;
