@@ -24,7 +24,7 @@ La implementación realizada está únicamente enfocada en la creación del reci
 1. Realizar el assert contra el resultado final del recibo me permitió cambiar libremente la implementación en los refactorings sin tropiezos.
 2. Mientras implementaba iba dejando TODO con las correcciones que esperaba poder realizar en el refactoring.
 3. Disfruté mucho el refactor a partir de este [commit](https://github.com/augusto-romero-arango/TDD-katas/tree/4e932c22e23e173d1a02e598fcb6cdbcbb5cfcfe). Esta implementación estaba muy fea.
-4. Refactorizar también es cumplir pequeños pasos y validar que estemos en verde. Para eso se debe evitar hacer cambios grandes que no permitan dejar retroalimetnación de la causa del error. Las pruebas funcionan como una malla de salvación.
+4. Refactorizar también es cumplir pequeños pasos y validar que estemos en verde. Para eso se debe evitar hacer cambios grandes que no permitan dejar retroalimentación de la causa del error. Las pruebas funcionan como una malla de salvación.
 5. Haga commits pequeños de cada refactor efectivo. Tuve momento en que un cambio que hice dañó el código y me tocó devolverme a un estado correcto conocido.
 6. Después de segmentados los descuentos en clases, se podrían probar unitariamente cada descuento para evaluar casos de borde.
 7. Sin estar pendiente del coverage. La solución tiene cobertura del 100% ![Code coverage](Assets/img/code-coverage-supermarket-receipt.png)
@@ -32,9 +32,9 @@ La implementación realizada está únicamente enfocada en la creación del reci
 ### Posibles continuaciones de la kata
 
 - Implementar descuento de X% en la segunda unidad idéntica.
-- Controlar que no se apliquen descuentos sobre descuentos en caso que un producto tenga más de un descuento.
+- Controlar que no se apliquen descuentos sobre descuentos en caso de que un producto tenga más de un descuento.
 - Implementar el catálogo de productos con precios.
-- Implemnetar el carrito de compras.
+- Implementar el carrito de compras.
 - Modificar los descuentos para que sean aplicados masivamente y no por el ingreso individual de cada producto.
 
 
