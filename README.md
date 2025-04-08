@@ -27,6 +27,7 @@ La implementación realizada está únicamente enfocada en la creación del reci
 4. Refactorizar también es cumplir pequeños pasos y validar que estemos en verde. Para eso se debe evitar hacer cambios grandes que no permitan dejar retroalimetnación de la causa del error. Las pruebas funcionan como una malla de salvación.
 5. Haga commits pequeños de cada refactor efectivo. Tuve momento en que un cambio que hice dañó el código y me tocó devolverme a un estado correcto conocido.
 6. Después de segmentados los descuentos en clases, se podrían probar unitariamente cada descuento para evaluar casos de borde.
+7. Sin estar pendiente del coverage. La solución tiene cobertura del 100% ![Code coverage](Assets/img/code-coverage-supermarket-receipt.png)
 
 ### Posibles continuaciones de la kata
 
