@@ -1,7 +1,7 @@
 # TDD-katas
 
 ## Supermarket receipt
->
+
 >Write some code that could be used in a supermarket to calculate the total cost of items in a shopping cart and provide a receipt to the customer.
 >
 >The supermarket has a catalog with different types of products (rice, apples, milk, toothbrushes,…). Each product has a price, and the total price of the shopping cart is the total of all the prices of the items. You get a receipt that details the items you’ve bought, the total price, and any discounts that were applied.
@@ -19,7 +19,7 @@ Fuente: [Samman Technical Coaching](https://sammancoaching.org/kata_descriptions
 
 La implementación realizada está únicamente enfocada en la creación del recibo. No se modeló el catálogo ni el shopping cart.
 
-## Hallazgos
+### Hallazgos
 
 1. Realizar el assert contra el resultado final del recibo me permitió cambiar libremente la implementación en los refactorings sin tropiezos.
 2. Mientras implementaba iba dejando TODO con las correcciones que esperaba poder realizar en el refactoring.
@@ -28,7 +28,7 @@ La implementación realizada está únicamente enfocada en la creación del reci
 5. Haga commits pequeños de cada refactor efectivo. Tuve momento en que un cambio que hice dañó el código y me tocó devolverme a un estado correcto conocido.
 6. Después de segmentados los descuentos en clases, se podrían probar unitariamente cada descuento para evaluar casos de borde.
 
-## Posibles continuaciones de la kata
+### Posibles continuaciones de la kata
 
 - Implementar descuento de X% en la segunda unidad idéntica.
 - Controlar que no se apliquen descuentos sobre descuentos en caso que un producto tenga más de un descuento.
