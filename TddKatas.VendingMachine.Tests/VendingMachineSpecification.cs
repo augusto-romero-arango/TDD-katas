@@ -175,6 +175,21 @@ public class VendingMachineSpecification
 
         Assert.Equivalent(respuesta, VendingMachineRespuesta.ThankYou(Producto.Candy, monedasRetornadas));
     }
+
+    [Fact]
+    public void SeleccionarProducto_Cunado_Ingresa_Monedas_De_Sobra_Devuelve_Producto_Y_Vueltas()
+    {
+        var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
+        var maquina = new VendingMachine(inventarioInicial);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+
+        var respuesta = maquina.SeleccionarProducto(Producto.Chips);
+        
+        Assert.Equivalent(respuesta, VendingMachineRespuesta.ThankYou(Producto.Chips, [Coin.Quarter, Coin.Quarter]));
+    }
     
     
 }
