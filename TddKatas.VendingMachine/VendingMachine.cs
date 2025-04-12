@@ -4,9 +4,9 @@ public class VendingMachine(List<Producto>? inventarioInicial = null)
 {
     private static readonly Dictionary<Producto, double> ListaDePrecios = new()
     {
-        { Producto.Chips, 0.5 },
-        { Producto.Cola, 1 },
-        { Producto.Candy, 0.65 }
+        {Producto.Chips, 0.5},
+        {Producto.Cola, 1},
+        {Producto.Candy, 0.65}
     };
 
     private readonly List<Producto> _inventarioInicial = inventarioInicial ?? [];
@@ -14,21 +14,24 @@ public class VendingMachine(List<Producto>? inventarioInicial = null)
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
-        if (_inventarioInicial.Contains(producto))
+        if (_inventarioInicial.Contains(producto) == false)
+            return new VendingMachineRespuesta("SOLD OUT", [], null);
+
+        if (CalcularMontoIngresado() < ObtenerPrecioDe(producto))
             return new VendingMachineRespuesta($"PRICE: $ {ObtenerPrecioDe(producto):F2}", [], null);
 
-        return new VendingMachineRespuesta("SOLD OUT", [], null);
+        return new VendingMachineRespuesta("THANK YOU", [], producto);
     }
 
     private static double ObtenerPrecioDe(Producto producto)
     {
-        return  ListaDePrecios[producto];
+        return ListaDePrecios[producto];
     }
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         _monedasInsertadas.Add(monedaIngresada);
-        
+
         return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {CalcularMontoIngresado():F2}", [], null);
     }
 
@@ -41,7 +44,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null)
     {
         var monedasARetornar = _monedasInsertadas.ToArray();
         _monedasInsertadas.Clear();
-        
+
         return new VendingMachineRespuesta("INSERT COIN", monedasARetornar, null);
     }
 }
