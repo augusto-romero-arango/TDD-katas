@@ -15,6 +15,7 @@ public class VendingMachineSpecification
     [Theory]
     [InlineData(Producto.Chips, "PRICE: $ 0.50")]
     [InlineData(Producto.Cola, "PRICE: $ 1.00")]
+    [InlineData(Producto.Candy, "PRICE: $ 0.65")]
     public void SeleccionarProducto_CuandoHayInventario_Y_No_Hay_Dinero_Suficiente_Retorna_PRICE(Producto productoSolicitado, string displayEsperado)
     {
         var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola};
@@ -54,7 +55,8 @@ public class VendingMachine
 public enum Producto
 {
     Chips,
-    Cola
+    Cola,
+    Candy
 }
 
 public record VendingMachineRespuesta(string Display);
