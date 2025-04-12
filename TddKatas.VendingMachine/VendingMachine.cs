@@ -2,11 +2,11 @@
 
 public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin> inventarioInicialMonedas = null)
 {
-    private static readonly Dictionary<Producto, double> ListaDePrecios = new()
+    private static readonly Dictionary<Producto, decimal> ListaDePrecios = new()
     {
-        {Producto.Chips, 0.5},
-        {Producto.Cola, 1},
-        {Producto.Candy, 0.65}
+        {Producto.Chips, 0.5m},
+        {Producto.Cola, 1m},
+        {Producto.Candy, 0.65m}
     };
 
     private readonly List<Producto> _inventarioInicial = inventarioInicial ?? [];
@@ -27,7 +27,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
             return new VendingMachineRespuesta("THANK YOU", [], producto);
         }
 
-        var diferencia = CalcularMontoIngresado() - CalcularMontoIngresado();
+        var diferencia = CalcularMontoIngresado() - ObtenerPrecioDe(producto);
         var vueltas = _inventarioMonedas
             .Where(m => m.Valor() == diferencia)
             .ToArray();
@@ -38,7 +38,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
         return new VendingMachineRespuesta("THANK YOU", vueltas, producto);
     }
 
-    private static double ObtenerPrecioDe(Producto producto)
+    private static decimal ObtenerPrecioDe(Producto producto)
     {
         return ListaDePrecios[producto];
     }
@@ -50,7 +50,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
         return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {CalcularMontoIngresado():F2}", [], null);
     }
 
-    private double CalcularMontoIngresado()
+    private decimal CalcularMontoIngresado()
     {
         return _monedasInsertadas.Select(m => m.Valor()).Sum();
     }

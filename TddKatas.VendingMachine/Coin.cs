@@ -9,8 +9,8 @@ public enum Coin
 
 public static class CoinExtensions
 {
-    public static double Valor(this Coin moneda)
+    public static decimal Valor(this Coin moneda)
     {
-        return (int)moneda / 100.0;
+        return (int)moneda / 100m;
     }
 }
