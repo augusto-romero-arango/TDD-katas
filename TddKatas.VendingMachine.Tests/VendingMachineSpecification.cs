@@ -94,6 +94,23 @@ public class VendingMachineSpecification
         Assert.Equal(respuesta, new VendingMachineRespuesta("THANK YOU", [], Producto.Cola));
     }
     
+    [Fact]
+    public void SeleccionarProducto_CuandoHayUnaVenta_DescuentaInventario()
+    {
+        var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
+        var maquina = new VendingMachine(inventarioInicial);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        // Compra la última unidad de Cola
+        _ = maquina.SeleccionarProducto(Producto.Cola);
+        
+        var respuesta = maquina.SeleccionarProducto(Producto.Cola);
+
+        Assert.Equal(respuesta, new VendingMachineRespuesta("SOLD OUT", [], null));
+    }
+    
     
     
 }
