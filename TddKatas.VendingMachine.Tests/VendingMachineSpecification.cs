@@ -43,19 +43,19 @@ public class VendingMachine
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
         if (_inventarioInicial.Contains(producto))
-        {
-            double precio =  producto switch
-            {
-                Producto.Chips => 0.5, //new VendingMachineRespuesta("PRICE: $ 0.50"),
-                Producto.Cola => 1, // new VendingMachineRespuesta("PRICE: $ 1.00"),
-                Producto.Candy => 0.65, //new VendingMachineRespuesta("PRICE: $ 0.65")
-            };
-            
-            return new VendingMachineRespuesta($"PRICE: $ {precio:F2}");
-        }
-            
+            return new VendingMachineRespuesta($"PRICE: $ {ObtenerPrecioDe(producto):F2}");
 
         return new VendingMachineRespuesta("SOLD OUT");
+    }
+
+    private static double ObtenerPrecioDe(Producto producto)
+    {
+        return  producto switch
+        {
+            Producto.Chips => 0.5, 
+            Producto.Cola => 1, 
+            Producto.Candy => 0.65,
+        };
     }
 }
 
