@@ -10,6 +10,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
     };
 
     private readonly List<Producto> _inventarioInicial = inventarioInicial ?? [];
+    private readonly List<Coin> _inventarioMonedas = inventarioInicialMonedas ?? [];
     private readonly List<Coin> _monedasInsertadas = [];
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
@@ -25,8 +26,16 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
             _inventarioInicial.Remove(producto);
             return new VendingMachineRespuesta("THANK YOU", [], producto);
         }
-        
-        return new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null);
+
+        var diferencia = CalcularMontoIngresado() - CalcularMontoIngresado();
+        var vueltas = _inventarioMonedas
+            .Where(m => m.Valor() == diferencia)
+            .ToArray();
+
+        if (vueltas.Length == 0)
+            return new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null);
+
+        return new VendingMachineRespuesta("THANK YOU", vueltas, producto);
     }
 
     private static double ObtenerPrecioDe(Producto producto)
