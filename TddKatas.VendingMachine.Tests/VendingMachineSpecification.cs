@@ -63,5 +63,19 @@ public class VendingMachineSpecification
         Assert.Equivalent(respuesta, new VendingMachineRespuesta("INSERT COIN", [Coin.Quarter, Coin.Dime]));
     }
     
+    [Fact]
+    public void RetornarMonedas_Devuelve_Monedas_Y_Desocupa_Monedas_Ingresadas_De_VendingMachine()
+    {
+        var maquina = new VendingMachine();
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.RetornarMonedas();
+        var respuestaInsertarMonedas = maquina.InsertarMoneda(Coin.Dime);
+
+        var respuesta = maquina.RetornarMonedas();
+
+        Assert.Equivalent(respuestaInsertarMonedas, new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.10", []));
+        Assert.Equivalent(respuesta, new VendingMachineRespuesta("INSERT COIN", [Coin.Dime]));
+    }
+    
     
 }

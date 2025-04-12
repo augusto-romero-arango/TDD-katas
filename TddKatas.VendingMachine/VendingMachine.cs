@@ -45,6 +45,7 @@ public class VendingMachine
 
     public VendingMachineRespuesta RetornarMonedas()
     {
+        
         return new VendingMachineRespuesta("INSERT COIN", _monedasInsertadas.ToArray());
     }
 }
