@@ -42,6 +42,9 @@ public record VendingMachineRespuesta
         return new VendingMachineRespuesta("INSERT COIN", monedasARetornar, null);
     }
 
-    
+    public static VendingMachineRespuesta InvalidCoin(Coin moneda)
+    {
+        return new VendingMachineRespuesta("INSERT COIN", [moneda], null);
+    }
 
 }

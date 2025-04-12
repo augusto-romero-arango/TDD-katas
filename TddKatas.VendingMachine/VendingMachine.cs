@@ -24,9 +24,15 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
-        if (monedaIngresada == Coin.Penny)
-            return VendingMachineRespuesta.InsertCoin([monedaIngresada]);
-        
+        return monedaIngresada.EsValida() switch
+        {
+            true => InsertarMonedaValida(monedaIngresada),
+            false =>VendingMachineRespuesta.InvalidCoin(monedaIngresada) 
+        };
+    }
+
+    private VendingMachineRespuesta InsertarMonedaValida(Coin monedaIngresada)
+    {
         _monedero.InsertarMonedasAInventario(monedaIngresada);
         return VendingMachineRespuesta.CurrentAmount(_monedero.CalcularValorInsertado());
     }

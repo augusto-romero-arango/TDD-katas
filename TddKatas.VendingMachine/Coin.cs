@@ -50,4 +50,9 @@ internal static class CoinExtensions
             .Select(m => m.Valor())
             .Sum();
     }
+    
+    public static bool EsValida(this Coin moneda)
+    {
+        return moneda != Coin.Penny;
+    }
 }
