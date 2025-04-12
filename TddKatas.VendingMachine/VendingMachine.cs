@@ -32,7 +32,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
         
         var vueltas = CalcularCambio(diferencia);
 
-        if (vueltas.Count == 0)
+        if (vueltas.Totalizar() != diferencia)
             return VendingMachineRespuesta.ExactChangeOnly();
 
         return DispensarProducto(producto, vueltas.ToArray());
