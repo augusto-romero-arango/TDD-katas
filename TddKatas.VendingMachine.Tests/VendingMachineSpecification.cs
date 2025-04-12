@@ -42,7 +42,10 @@ public class VendingMachine
     public VendingMachineRespuesta SelaccionarProducto(Producto producto)
     {
         if(_inventarioInicial.Contains(producto))
-            return new VendingMachineRespuesta("PRICE: $ 0.50");
+            if(producto == Producto.Chips)
+                return new VendingMachineRespuesta("PRICE: $ 0.50");
+            else
+                return new VendingMachineRespuesta("PRICE: $ 1.00");
         
         return new VendingMachineRespuesta("SOLD OUT");
     }
