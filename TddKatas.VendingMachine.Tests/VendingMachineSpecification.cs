@@ -27,7 +27,8 @@ public class VendingMachineSpecification
     }
     
     [Theory]
-    [InlineData(Coin.Quarter, "CURRENT AMOUNT: $ 0.50")]
+    [InlineData(Coin.Quarter, "CURRENT AMOUNT: $ 0.25")]
+    [InlineData(Coin.Dime, "CURRENT AMOUNT: $ 0.10")]
     public void InsertarMoneda_CuandoEsValida_Retorna_CURRENT_AMOUNT(Coin monedaIngresada, string displayEspeado)
     {
         var maquina = new VendingMachine();
@@ -41,6 +42,7 @@ public class VendingMachineSpecification
 public enum Coin
 {
     Quarter = 25,
+    Dime = 10,
 }
 
 public class VendingMachine
@@ -78,7 +80,7 @@ public class VendingMachine
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
-        return new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.50");
+        return new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.25");
     }
 }
 
