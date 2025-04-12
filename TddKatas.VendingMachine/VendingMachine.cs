@@ -17,28 +17,31 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
     {
         
         if (_inventarioInicial.Contains(producto) == false)
-            return new VendingMachineRespuesta("SOLD OUT", [], null);
+            return VendingMachineRespuesta.SoldOut();
 
         var precio = ObtenerPrecioDe(producto);
         var totalIngresado = CalcularMontoIngresado();
         
         if (totalIngresado < precio)
-            return new VendingMachineRespuesta($"PRICE: $ {precio:F2}", [], null);
+            return VendingMachineRespuesta.Price(precio);
 
         if (totalIngresado == precio)
-        {
-            _inventarioInicial.Remove(producto);
-            return new VendingMachineRespuesta("THANK YOU", [], producto);
-        }
+            return DispensarProducto(producto, []);
 
         var diferencia = totalIngresado - precio;
         
         var vueltas = CalcularCambio(diferencia);
 
         if (vueltas.Count == 0)
-            return new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null);
+            return VendingMachineRespuesta.ExactChangeOnly();
 
-        return new VendingMachineRespuesta("THANK YOU", vueltas.ToArray(), producto);
+        return DispensarProducto(producto, vueltas.ToArray());
+    }
+
+    private VendingMachineRespuesta DispensarProducto(Producto producto, Coin[] monedasRetornadas)
+    {
+        _inventarioInicial.Remove(producto);
+        return VendingMachineRespuesta.ThankYou(producto, monedasRetornadas);
     }
 
     private List<Coin> CalcularCambio(decimal diferencia)
@@ -56,8 +59,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         _monedasInsertadas.Add(monedaIngresada);
-
-        return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {CalcularMontoIngresado():F2}", [], null);
+        return VendingMachineRespuesta.CurrentAmount(CalcularMontoIngresado());
     }
 
     private decimal CalcularMontoIngresado()
@@ -69,7 +71,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
     {
         var monedasARetornar = _monedasInsertadas.ToArray();
         _monedasInsertadas.Clear();
-
-        return new VendingMachineRespuesta("INSERT COIN", monedasARetornar, null);
+        
+        return VendingMachineRespuesta.InsertCoin(monedasARetornar);
     }
 }
