@@ -40,8 +40,9 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
     private List<Coin> CalcularCambio(decimal diferencia)
     {
         var monedasParaVueltas = _inventarioMonedas
-            .Where(m => diferencia % m.Valor()  == 0)
+            .Where(m => m.Valor() <= diferencia)
             .OrderByDescending(m => m.Valor())
+            
             .ToArray();
         
         var vueltas = new List<Coin>();

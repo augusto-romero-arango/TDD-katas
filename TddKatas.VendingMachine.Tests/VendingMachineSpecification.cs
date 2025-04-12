@@ -26,8 +26,7 @@ public class VendingMachineSpecification
 
         Assert.Equal(respuesta, new VendingMachineRespuesta(displayEsperado, [], null));
     }
-    
-    
+
 
     [Theory]
     [InlineData(Coin.Quarter, "CURRENT AMOUNT: $ 0.25")]
@@ -64,7 +63,7 @@ public class VendingMachineSpecification
 
         Assert.Equivalent(respuesta, new VendingMachineRespuesta("INSERT COIN", [Coin.Quarter, Coin.Dime], null));
     }
-    
+
     [Fact]
     public void RetornarMonedas_Devuelve_Monedas_Y_Desocupa_Monedas_Ingresadas_De_VendingMachine()
     {
@@ -78,7 +77,7 @@ public class VendingMachineSpecification
         Assert.Equivalent(respuestaInsertarMonedas, new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.10", [], null));
         Assert.Equivalent(respuesta, new VendingMachineRespuesta("INSERT COIN", [Coin.Dime], null));
     }
-    
+
     [Fact]
     public void SeleccionarProducto_CuandoHayInventario_Y_Hay_Dinero_Exacto_Retorna_Producto_Y_THANK_YOU()
     {
@@ -93,7 +92,7 @@ public class VendingMachineSpecification
 
         Assert.Equal(respuesta, new VendingMachineRespuesta("THANK YOU", [], Producto.Cola));
     }
-    
+
     [Fact]
     public void SeleccionarProducto_CuandoHayUnaVenta_DescuentaInventario()
     {
@@ -105,72 +104,62 @@ public class VendingMachineSpecification
         _ = maquina.InsertarMoneda(Coin.Quarter);
         // Compra la última unidad de Cola
         _ = maquina.SeleccionarProducto(Producto.Cola);
-        
+
         var respuesta = maquina.SeleccionarProducto(Producto.Cola);
 
         Assert.Equal(respuesta, new VendingMachineRespuesta("SOLD OUT", [], null));
     }
-    
-  
+
+
     [Fact]
-    public void SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_No_Hay_Cambio_Retorna_EXACT_CHANGE_ONLY()
+    public void
+        SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_No_Hay_Cambio_Retorna_EXACT_CHANGE_ONLY()
     {
         var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
         var maquina = new VendingMachine(inventarioInicial);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
-        
+
         var respuesta = maquina.SeleccionarProducto(Producto.Candy);
 
         Assert.Equal(respuesta, new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null));
     }
-    
+
     [Fact]
     public void SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_Hay_Cambio_Retorna_Venta_Con_Vueltas()
     {
         var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
-        var inventarioInicialMonedas = new List<Coin>() {Coin.Dime};    
+        var inventarioInicialMonedas = new List<Coin>() {Coin.Dime};
         var maquina = new VendingMachine(inventarioInicial, inventarioInicialMonedas);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
-        
+
         var respuesta = maquina.SeleccionarProducto(Producto.Candy);
 
         Assert.Equivalent(respuesta, new VendingMachineRespuesta("THANK YOU", [Coin.Dime], Producto.Candy));
     }
-    
-    [Fact]
-    public void SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_Hay_Cambio_Con_Dos_Monedas_Retorna_Venta_Con_Vueltas()
+
+
+    [Theory]
+    [InlineData(new[] {Coin.Nickel, Coin.Nickel, Coin.Dime}, new []{Coin.Dime})]
+    [InlineData(new[] {Coin.Nickel, Coin.Nickel}, new []{Coin.Nickel, Coin.Nickel})]
+    [InlineData(new[] {Coin.Nickel, Coin.Nickel, Coin.Quarter}, new []{Coin.Nickel, Coin.Nickel})]
+    public void
+        SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_Hay_Cambio_Prefiere_Retorna_Venta_Con_Vueltas_De_Mayor_Denominacion(
+            Coin[] inventarioMonedas, Coin[] monedasRetornadas)
     {
         var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
-        var inventarioInicialMonedas = new List<Coin>() {Coin.Nickel, Coin.Nickel};    
-        var maquina = new VendingMachine(inventarioInicial, inventarioInicialMonedas);
+        var maquina = new VendingMachine(inventarioInicial, inventarioMonedas.ToList());
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
-        
+
         var respuesta = maquina.SeleccionarProducto(Producto.Candy);
-    
-        Assert.Equivalent(respuesta, new VendingMachineRespuesta("THANK YOU", [Coin.Nickel, Coin.Nickel], Producto.Candy));
+
+        Assert.Equivalent(respuesta, new VendingMachineRespuesta("THANK YOU", monedasRetornadas, Producto.Candy));
     }
-    
-    [Fact]
-    public void SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_Hay_Cambio_Prefiere_Retorna_Venta_Con_Vueltas_De_Mayor_Denominacion()
-    {
-        var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
-        var inventarioInicialMonedas = new List<Coin>() {Coin.Nickel, Coin.Nickel, Coin.Dime};    
-        var maquina = new VendingMachine(inventarioInicial, inventarioInicialMonedas);
-        _ = maquina.InsertarMoneda(Coin.Quarter);
-        _ = maquina.InsertarMoneda(Coin.Quarter);
-        _ = maquina.InsertarMoneda(Coin.Quarter);
-        
-        var respuesta = maquina.SeleccionarProducto(Producto.Candy);
-    
-        Assert.Equivalent(respuesta, new VendingMachineRespuesta("THANK YOU", [Coin.Dime], Producto.Candy));
-    }
-    
     
     
 }
