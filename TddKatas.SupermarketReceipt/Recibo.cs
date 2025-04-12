@@ -1,3 +1,4 @@
+using System.Globalization;
 using TddKatas.SupermarketReceipt.Descuentos;
 
 namespace TddKatas.SupermarketReceipt;
@@ -38,7 +39,7 @@ public class Recibo
         return $"""
                 {TextoEncabezadoRecibo}
                 {CrearDetalleProductosDelRecibo()}{CrearDetallesDescuentos()}
-                {TextoTotalAPagar} {CalcularTotalRecibo():C0}
+                {TextoTotalAPagar} {CalcularTotalRecibo().ToString("C0", new CultureInfo("es-CO"))}
                 """;
     }
     
@@ -74,8 +75,8 @@ public class Recibo
 
     private string CrearDetalleProductosDelRecibo()
     {
-        return _productosFacturados
-            .Select(producto => $"{producto}: {_listaPrecios.ObtenerPrecioDe(producto):C0}")
+        return _productosFacturados    
+            .Select(producto => $"{producto}: {_listaPrecios.ObtenerPrecioDe(producto).ToString("C0", new CultureInfo("es-CO"))}")
             .ToArray()
             .Aggregate((acumulado, detalle) =>
                 $"{acumulado}{Environment.NewLine}{detalle}");

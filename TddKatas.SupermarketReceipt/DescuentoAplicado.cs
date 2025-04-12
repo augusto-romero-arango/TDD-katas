@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace TddKatas.SupermarketReceipt;
 
 public record DescuentoAplicado(
@@ -7,6 +9,6 @@ public record DescuentoAplicado(
 {
     public override string ToString()
     {
-        return $"{Producto} ({FormatoDescuento}): {ValorDescuento:C0}";
+        return $"{Producto} ({FormatoDescuento}): {ValorDescuento.ToString("C0", new CultureInfo("es-CO"))}";
     }
 }
