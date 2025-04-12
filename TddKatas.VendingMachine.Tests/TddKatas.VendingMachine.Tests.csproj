@@ -18,4 +18,8 @@
         <Using Include="Xunit"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TddKatas.VendingMachine\TddKatas.VendingMachine.csproj" />
+    </ItemGroup>
+
 </Project>
