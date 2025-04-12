@@ -15,56 +15,26 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
-        
-        if (_inventarioInicial.Contains(producto) == false)
-            return VendingMachineRespuesta.SoldOut();
-
         var precio = ObtenerPrecioDe(producto);
-        var totalIngresado = CalcularMontoIngresado();
-        
-        if (totalIngresado < precio)
-            return VendingMachineRespuesta.Price(precio);
+        var totalIngresado = CalcularValorIngresado();
+        var tieneProducto = _inventarioInicial.Contains(producto);
+        var puedeDarVueltas = TryDarVueltas(totalIngresado, precio, out var vueltas);
 
-        if (totalIngresado == precio)
-            return DispensarProducto(producto, []);
+        return (tieneProducto, totalIngresado, puedeDarVueltas) switch
+        {
+            (tieneProducto: false, _, _) => VendingMachineRespuesta.SoldOut(),
+            (tieneProducto: true, var valorIngresado, _) when valorIngresado < precio => VendingMachineRespuesta.Price(precio),
+            (tieneProducto: true, var valorIngresado, _) when valorIngresado == precio => DispensarProducto(producto, []),
+            (tieneProducto: true, _, puedeDarVueltas: true) => DispensarProducto(producto, vueltas),
+            _ => VendingMachineRespuesta.ExactChangeOnly()
+        };
 
-        var diferencia = totalIngresado - precio;
-        
-        var vueltas = CalcularCambio(diferencia);
-
-        if (vueltas.Totalizar() != diferencia)
-            return VendingMachineRespuesta.ExactChangeOnly();
-
-        return DispensarProducto(producto, vueltas.ToArray());
-    }
-
-    private VendingMachineRespuesta DispensarProducto(Producto producto, Coin[] monedasRetornadas)
-    {
-        _inventarioInicial.Remove(producto);
-        return VendingMachineRespuesta.ThankYou(producto, monedasRetornadas);
-    }
-
-    private List<Coin> CalcularCambio(decimal diferencia)
-    {
-        return _inventarioMonedas
-            .InferioresA(diferencia)
-            .ObtenerHastaCompletar(diferencia);
-    }
-
-    private static decimal ObtenerPrecioDe(Producto producto)
-    {
-        return ListaDePrecios[producto];
     }
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         _monedasInsertadas.Add(monedaIngresada);
-        return VendingMachineRespuesta.CurrentAmount(CalcularMontoIngresado());
-    }
-
-    private decimal CalcularMontoIngresado()
-    {
-        return _monedasInsertadas.Totalizar();
+        return VendingMachineRespuesta.CurrentAmount(CalcularValorIngresado());
     }
 
     public VendingMachineRespuesta RetornarMonedas()
@@ -73,5 +43,36 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
         _monedasInsertadas.Clear();
         
         return VendingMachineRespuesta.InsertCoin(monedasARetornar);
+    }
+    private bool TryDarVueltas(decimal totalIngresado, decimal precio, out Coin[] vueltas)
+    {
+        var diferencia = totalIngresado - precio;
+        vueltas = CalcularVueltas(diferencia).ToArray();
+
+        return vueltas.Totalizar() == diferencia;
+    }
+
+    private VendingMachineRespuesta DispensarProducto(Producto producto, Coin[] monedasRetornadas)
+    {
+        _inventarioInicial.Remove(producto);
+        return VendingMachineRespuesta.ThankYou(producto, monedasRetornadas);
+    }
+
+
+    
+    private List<Coin> CalcularVueltas(decimal diferencia)
+    {
+        return _inventarioMonedas
+            .ObtenerInferioresA(diferencia)
+            .ObtenerHastaCompletar(diferencia);
+    }
+
+    private static decimal ObtenerPrecioDe(Producto producto)
+    {
+        return ListaDePrecios[producto];
+    }
+    private decimal CalcularValorIngresado()
+    {
+        return _monedasInsertadas.Totalizar();
     }
 }

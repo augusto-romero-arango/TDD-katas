@@ -14,7 +14,7 @@ public static class CoinExtensions
         return (int)moneda / 100m;
     }
     
-    public static List<Coin> InferioresA(this List<Coin> monedas, decimal diferencia)
+    public static List<Coin> ObtenerInferioresA(this List<Coin> monedas, decimal diferencia)
     {
         return monedas
             .Where(m => m.Valor() <= diferencia)
