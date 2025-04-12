@@ -48,7 +48,7 @@ public class VendingMachineSpecification
 
         var respuesta = maquina.InsertarMoneda(Coin.Penny);
         
-        Assert.Equal(respuesta, VendingMachineRespuesta.InsertCoin([Coin.Penny]));
+        Assert.Equivalent(respuesta, VendingMachineRespuesta.InsertCoin([Coin.Penny]));
     }
 
     [Fact]
