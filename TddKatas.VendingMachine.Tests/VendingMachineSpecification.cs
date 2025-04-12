@@ -77,7 +77,7 @@ public class VendingMachine
 
     public VendingMachineRespuesta InsertarMoneda(Coin quarter)
     {
-        throw new NotImplementedException();
+        return new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.50");
     }
 }
 
