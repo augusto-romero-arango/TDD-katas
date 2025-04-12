@@ -24,9 +24,9 @@ public class VendingMachine
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
         if (_inventarioInicial.Contains(producto))
-            return new VendingMachineRespuesta($"PRICE: $ {ObtenerPrecioDe(producto):F2}");
+            return new VendingMachineRespuesta($"PRICE: $ {ObtenerPrecioDe(producto):F2}", []);
 
-        return new VendingMachineRespuesta("SOLD OUT");
+        return new VendingMachineRespuesta("SOLD OUT", []);
     }
 
     private static double ObtenerPrecioDe(Producto producto)
@@ -38,6 +38,11 @@ public class VendingMachine
     {
         _saldoIngresado += monedaIngresada.Valor();
         
-        return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {_saldoIngresado:F2}");
+        return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {_saldoIngresado:F2}", []);
+    }
+
+    public VendingMachineRespuesta RetornarMonedas()
+    {
+        throw new NotImplementedException();
     }
 }

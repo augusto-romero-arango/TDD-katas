@@ -9,7 +9,7 @@ public class VendingMachineSpecification
 
         var respuesta = maquina.SeleccionarProducto(Producto.Chips); 
         
-        Assert.Equal(respuesta, new VendingMachineRespuesta("SOLD OUT"));
+        Assert.Equal(respuesta, new VendingMachineRespuesta("SOLD OUT", []));
     }
     
     [Theory]
@@ -23,7 +23,7 @@ public class VendingMachineSpecification
 
         var respuesta = maquina.SeleccionarProducto(productoSolicitado); 
         
-        Assert.Equal(respuesta, new VendingMachineRespuesta(displayEsperado));
+        Assert.Equal(respuesta, new VendingMachineRespuesta(displayEsperado, []));
     }
     
     [Theory]
@@ -36,7 +36,7 @@ public class VendingMachineSpecification
 
         var respuesta = maquina.InsertarMoneda(monedaIngresada); 
         
-        Assert.Equal(respuesta, new VendingMachineRespuesta(displayEspeado));
+        Assert.Equal(respuesta, new VendingMachineRespuesta(displayEspeado, []));
     }
 
     [Fact]
@@ -47,6 +47,17 @@ public class VendingMachineSpecification
         
         var respuesta = maquina.InsertarMoneda(Coin.Dime);
         
-        Assert.Equal(respuesta, new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.35"));
+        Assert.Equal(respuesta, new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.35", []));
     }
+
+    [Fact]
+    public void RetornarMonedas_Devuelve_Monedas_Ingresadas()
+    {
+        var maquina = new VendingMachine();
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+
+        var respuesta = maquina.RetornarMonedas();
+
+        Assert.Equal(respuesta, new VendingMachineRespuesta("INSERT COIN", [Coin.Quarter]));
+}
 }
