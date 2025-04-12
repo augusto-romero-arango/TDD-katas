@@ -6,6 +6,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SupermarketReceipt", "Super
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TddKatas.SupermarketReceipt", "TddKatas.SupermarketReceipt\TddKatas.SupermarketReceipt.csproj", "{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VendingMachine", "VendingMachine", "{85DADB7A-F668-4764-863A-2439D0EEDB65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TddKatas.VendingMachine.Tests", "TddKatas.VendingMachine.Tests\TddKatas.VendingMachine.Tests.csproj", "{F0807592-F85B-4D7B-B386-17E3C88E9B34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +24,14 @@ Global
 		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0807592-F85B-4D7B-B386-17E3C88E9B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0807592-F85B-4D7B-B386-17E3C88E9B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0807592-F85B-4D7B-B386-17E3C88E9B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0807592-F85B-4D7B-B386-17E3C88E9B34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{97505994-EAF5-418C-B04B-44CF5243F0D7} = {915FAFDF-F245-449D-95A3-384E1F0846D8}
 		{A8BC5B51-84C8-41C3-B400-63B7CE98CEDA} = {915FAFDF-F245-449D-95A3-384E1F0846D8}
+		{F0807592-F85B-4D7B-B386-17E3C88E9B34} = {85DADB7A-F668-4764-863A-2439D0EEDB65}
 	EndGlobalSection
 EndGlobal
