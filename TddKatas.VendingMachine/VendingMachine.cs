@@ -8,7 +8,7 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
         var precio = Inventario.ObtenerPrecioDe(producto);
-        var totalIngresado = _monedero.CalcularValorIngresado();
+        var totalIngresado = _monedero.CalcularValorInsertado();
         var tieneProducto = _inventario.HayProductoEnInventario(producto);
         var puedeDarVueltas = _monedero.TryDarVueltas(totalIngresado, precio, out Coin[] vueltas);
 
@@ -24,8 +24,8 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
-        _monedero.IngresarMonedasAInventario(monedaIngresada);
-        return VendingMachineRespuesta.CurrentAmount(_monedero.CalcularValorIngresado());
+        _monedero.InsertarMonedasAInventario(monedaIngresada);
+        return VendingMachineRespuesta.CurrentAmount(_monedero.CalcularValorInsertado());
     }
 
     public VendingMachineRespuesta RetornarMonedas()
