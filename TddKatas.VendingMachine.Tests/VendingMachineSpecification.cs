@@ -131,7 +131,7 @@ public class VendingMachineSpecification
         SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_No_Hay_Cambio_Exacto_Retorna_EXACT_CHANGE_ONLY()
     {
         var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
-        var maquina = new VendingMachine(inventarioInicial, new List<Coin>() {Coin.Nickel});
+        var maquina = new VendingMachine(inventarioInicial, [Coin.Nickel]);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
@@ -163,10 +163,10 @@ public class VendingMachineSpecification
     [InlineData(new[] {Coin.Nickel, Coin.Nickel, Coin.Quarter}, new []{Coin.Nickel, Coin.Nickel})]
     public void
         SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_Hay_Cambio_Prefiere_Retorna_Venta_Con_Vueltas_De_Mayor_Denominacion(
-            Coin[] inventarioMonedas, Coin[] monedasRetornadas)
+            Coin[] saldoInicial, Coin[] monedasRetornadas)
     {
         var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
-        var maquina = new VendingMachine(inventarioInicial, inventarioMonedas.ToList());
+        var maquina = new VendingMachine(inventarioInicial, saldoInicial.ToList());
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);

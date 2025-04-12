@@ -1,22 +1,16 @@
 ﻿namespace TddKatas.VendingMachine;
 
-public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null, List<Coin>? inventarioInicialDeMonedas = null)
+public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null, List<Coin>? saldoInicialDeCaja = null)
 {
-    private static readonly Dictionary<Producto, decimal> ListaDePrecios = new()
-    {
-        {Producto.Chips, 0.5m},
-        {Producto.Cola, 1m},
-        {Producto.Candy, 0.65m}
-    };
-
-    private readonly List<Producto> _inventarioProductos = inventarioInicialDeProductos ?? [];
-    private readonly Monedero _monedero = new (inventarioInicialDeMonedas);
+    
+    private readonly Monedero _monedero = new (saldoInicialDeCaja);
+    private readonly Inventario _inventario = new (inventarioInicialDeProductos);
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
-        var precio = ObtenerPrecioDe(producto);
+        var precio = Inventario.ObtenerPrecioDe(producto);
         var totalIngresado = _monedero.CalcularValorIngresado();
-        var tieneProducto = _inventarioProductos.Contains(producto);
+        var tieneProducto = _inventario.HayProductoEnInventario(producto);
         var puedeDarVueltas = _monedero.TryDarVueltas(totalIngresado, precio, out var vueltas);
 
         return (tieneProducto, totalIngresado, puedeDarVueltas) switch
@@ -32,26 +26,20 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         _monedero.IngresarMonedasAInventario(monedaIngresada);
-
         return VendingMachineRespuesta.CurrentAmount(_monedero.CalcularValorIngresado());
     }
 
     public VendingMachineRespuesta RetornarMonedas()
     {
         var monedasARetornar = _monedero.RetornarMonedasRecienIngresadas();
-
         return VendingMachineRespuesta.InsertCoin(monedasARetornar);
     }
-
+    
     private VendingMachineRespuesta DispensarProducto(Producto producto, Coin[] monedasRetornadas)
     {
-        _inventarioProductos.Remove(producto);
+        _inventario.QuitarProductoDelInventario(producto);
         return VendingMachineRespuesta.ThankYou(producto, monedasRetornadas);
     }
 
-    private static decimal ObtenerPrecioDe(Producto producto)
-    {
-        return ListaDePrecios[producto];
-    }
-
+    
 }
