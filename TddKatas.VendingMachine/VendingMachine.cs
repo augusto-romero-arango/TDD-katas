@@ -28,8 +28,9 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
         }
 
         var diferencia = CalcularMontoIngresado() - ObtenerPrecioDe(producto);
+        
         var vueltas = _inventarioMonedas
-            .Where(m => m.Valor() == diferencia)
+            .Where(m => diferencia % m.Valor()  == 0)
             .ToArray();
 
         if (vueltas.Length == 0)

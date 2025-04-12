@@ -153,7 +153,7 @@ public class VendingMachineSpecification
         
         var respuesta = maquina.SeleccionarProducto(Producto.Candy);
     
-        Assert.Equal(respuesta, new VendingMachineRespuesta("THANK YOU", [Coin.Nickel, Coin.Nickel], Producto.Candy));
+        Assert.Equivalent(respuesta, new VendingMachineRespuesta("THANK YOU", [Coin.Nickel, Coin.Nickel], Producto.Candy));
     }
     
     
