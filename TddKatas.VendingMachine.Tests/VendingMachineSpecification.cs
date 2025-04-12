@@ -44,12 +44,14 @@ public class VendingMachine
     {
         if (_inventarioInicial.Contains(producto))
         {
-            return producto switch
+            double precio =  producto switch
             {
-                Producto.Chips => new VendingMachineRespuesta("PRICE: $ 0.50"),
-                Producto.Cola => new VendingMachineRespuesta("PRICE: $ 1.00"),
-                Producto.Candy => new VendingMachineRespuesta("PRICE: $ 0.65")
+                Producto.Chips => 0.5, //new VendingMachineRespuesta("PRICE: $ 0.50"),
+                Producto.Cola => 1, // new VendingMachineRespuesta("PRICE: $ 1.00"),
+                Producto.Candy => 0.65, //new VendingMachineRespuesta("PRICE: $ 0.65")
             };
+            
+            return new VendingMachineRespuesta($"PRICE: $ {precio:F2}");
         }
             
 
