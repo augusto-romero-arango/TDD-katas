@@ -1,6 +1,6 @@
 ﻿namespace TddKatas.VendingMachine;
 
-public class VendingMachine
+public class VendingMachine(List<Producto>? inventarioInicial = null)
 {
     private static readonly Dictionary<Producto, double> ListaDePrecios = new()
     {
@@ -9,17 +9,8 @@ public class VendingMachine
         { Producto.Candy, 0.65 }
     };
 
-    private readonly List<Producto> _inventarioInicial;
+    private readonly List<Producto> _inventarioInicial = inventarioInicial ?? [];
     private readonly List<Coin> _monedasInsertadas = [];
-
-    public VendingMachine()
-    {
-        _inventarioInicial = [];
-    }
-    public VendingMachine(List<Producto> inventarioInicial)
-    {
-        _inventarioInicial = inventarioInicial;
-    }
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
