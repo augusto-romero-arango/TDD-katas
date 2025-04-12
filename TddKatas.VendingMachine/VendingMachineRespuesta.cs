@@ -1,3 +1,3 @@
 ﻿namespace TddKatas.VendingMachine;
 
-public record VendingMachineRespuesta(string Display, Coin[] MonedasRetornadas);
+public record VendingMachineRespuesta(string Display, Coin[] MonedasRetornadas, Producto? ProductoEntregado);
