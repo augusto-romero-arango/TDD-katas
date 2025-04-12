@@ -10,15 +10,14 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
     };
 
     private readonly List<Producto> _inventarioProductos = inventarioInicialDeProductos ?? [];
-    private readonly List<Coin> _inventarioMonedas = inventarioInicialDeMonedas ?? [];
-    private readonly List<Coin> _monedasInsertadas = [];
+    private readonly Monedero _monedero = new (inventarioInicialDeMonedas);
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
         var precio = ObtenerPrecioDe(producto);
-        var totalIngresado = CalcularValorIngresado();
+        var totalIngresado = _monedero.CalcularValorIngresado();
         var tieneProducto = _inventarioProductos.Contains(producto);
-        var puedeDarVueltas = TryDarVueltas(totalIngresado, precio, out var vueltas);
+        var puedeDarVueltas = _monedero.TryDarVueltas(totalIngresado, precio, out var vueltas);
 
         return (tieneProducto, totalIngresado, puedeDarVueltas) switch
         {
@@ -32,14 +31,14 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
-        IngresarMonedasAInventario(monedaIngresada);
+        _monedero.IngresarMonedasAInventario(monedaIngresada);
 
-        return VendingMachineRespuesta.CurrentAmount(CalcularValorIngresado());
+        return VendingMachineRespuesta.CurrentAmount(_monedero.CalcularValorIngresado());
     }
 
     public VendingMachineRespuesta RetornarMonedas()
     {
-        var monedasARetornar = RetornarMonedasRecienIngresadas();
+        var monedasARetornar = _monedero.RetornarMonedasRecienIngresadas();
 
         return VendingMachineRespuesta.InsertCoin(monedasARetornar);
     }
@@ -54,42 +53,5 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
     {
         return ListaDePrecios[producto];
     }
-    private decimal CalcularValorIngresado()
-    {
-        return _monedasInsertadas.Totalizar();
-    }
-    
-    
-    ////// Para extraer en el monedero
-    
-    
-    private void IngresarMonedasAInventario(Coin monedaIngresada)
-    {
-        _monedasInsertadas.Add(monedaIngresada);
-        _inventarioMonedas.Add(monedaIngresada);
-    }
-    
-    private Coin[] RetornarMonedasRecienIngresadas()
-    {
-        _monedasInsertadas.ForEach(coin => _inventarioMonedas.Remove(coin));
-        
-        var monedasARetornar = _monedasInsertadas.ToArray();
-        _monedasInsertadas.Clear();
-        return monedasARetornar;
-    }
-    
-    private List<Coin> CalcularVueltas(decimal diferencia)
-    {
-        return _inventarioMonedas
-            .ObtenerInferioresA(diferencia)
-            .ObtenerHastaCompletar(diferencia);
-    }
-    
-    private bool TryDarVueltas(decimal totalIngresado, decimal precio, out Coin[] vueltas)
-    {
-        var diferencia = totalIngresado - precio;
-        vueltas = CalcularVueltas(diferencia).ToArray();
 
-        return vueltas.Totalizar() == diferencia;
-    }
 }
