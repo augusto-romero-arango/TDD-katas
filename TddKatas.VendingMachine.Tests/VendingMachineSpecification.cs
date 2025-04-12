@@ -12,15 +12,16 @@ public class VendingMachineSpecification
         Assert.Equal(respuesta, new VendingMachineRespuesta("SOLD OUT"));
     }
     
-    [Fact]
-    public void SeleccionarProducto_CuandoHayInventario_Y_No_Hay_Dinero_Suficiente_Retorna_PRICE()
+    [Theory]
+    [InlineData(Producto.Chips, "PRICE: $ 0.50")]
+    public void SeleccionarProducto_CuandoHayInventario_Y_No_Hay_Dinero_Suficiente_Retorna_PRICE(Producto productoSolicitado, string displayEsperado)
     {
         var inventarioInicial = new List<Producto>() {Producto.Chips};
         var maquina = new VendingMachine(inventarioInicial);
 
-        var respuesta = maquina.SelaccionarProducto(Producto.Chips); 
+        var respuesta = maquina.SelaccionarProducto(productoSolicitado); 
         
-        Assert.Equal(respuesta, new VendingMachineRespuesta("PRICE: $ 0.50"));
+        Assert.Equal(respuesta, new VendingMachineRespuesta(displayEsperado));
     }
 }
 
