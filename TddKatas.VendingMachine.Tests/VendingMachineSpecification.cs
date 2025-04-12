@@ -126,6 +126,21 @@ public class VendingMachineSpecification
         Assert.Equal(respuesta, new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null));
     }
     
+    [Fact]
+    public void SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_Hay_Cambio_Retorna_Venta_Con_Vueltas()
+    {
+        var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
+        var inventarioInicialMonedas = new List<Coin>() {Coin.Dime};    
+        var maquina = new VendingMachine(inventarioInicial, inventarioInicialMonedas);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        
+        var respuesta = maquina.SeleccionarProducto(Producto.Candy);
+
+        Assert.Equal(respuesta, new VendingMachineRespuesta("THANK YOU", [Coin.Dime], Producto.Candy));
+    }
+    
     
     
 }

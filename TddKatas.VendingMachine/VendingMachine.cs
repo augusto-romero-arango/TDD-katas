@@ -1,6 +1,6 @@
 ﻿namespace TddKatas.VendingMachine;
 
-public class VendingMachine(List<Producto>? inventarioInicial = null)
+public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin> inventarioInicialMonedas = null)
 {
     private static readonly Dictionary<Producto, double> ListaDePrecios = new()
     {
