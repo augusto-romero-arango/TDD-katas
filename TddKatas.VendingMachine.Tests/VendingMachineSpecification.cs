@@ -7,7 +7,7 @@ public class VendingMachineSpecification
     {
         var maquina = new VendingMachine();
 
-        var respuesta = maquina.SelaccionarProducto(Producto.Chips); 
+        var respuesta = maquina.SeleccionarProducto(Producto.Chips); 
         
         Assert.Equal(respuesta, new VendingMachineRespuesta("SOLD OUT"));
     }
@@ -21,7 +21,7 @@ public class VendingMachineSpecification
         var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
         var maquina = new VendingMachine(inventarioInicial);
 
-        var respuesta = maquina.SelaccionarProducto(productoSolicitado); 
+        var respuesta = maquina.SeleccionarProducto(productoSolicitado); 
         
         Assert.Equal(respuesta, new VendingMachineRespuesta(displayEsperado));
     }
@@ -40,16 +40,19 @@ public class VendingMachine
         _inventarioInicial = inventarioInicial;
     }
 
-    public VendingMachineRespuesta SelaccionarProducto(Producto producto)
+    public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
-        if(_inventarioInicial.Contains(producto))
-            if(producto == Producto.Chips)
-                return new VendingMachineRespuesta("PRICE: $ 0.50");
-            else if(producto == Producto.Cola)
-                return new VendingMachineRespuesta("PRICE: $ 1.00");
-            else
-                return new VendingMachineRespuesta("PRICE: $ 0.65");
-        
+        if (_inventarioInicial.Contains(producto))
+        {
+            return producto switch
+            {
+                Producto.Chips => new VendingMachineRespuesta("PRICE: $ 0.50"),
+                Producto.Cola => new VendingMachineRespuesta("PRICE: $ 1.00"),
+                Producto.Candy => new VendingMachineRespuesta("PRICE: $ 0.65")
+            };
+        }
+            
+
         return new VendingMachineRespuesta("SOLD OUT");
     }
 }
