@@ -1,6 +1,6 @@
 ﻿namespace TddKatas.VendingMachine;
 
-public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>? inventarioInicialMonedas = null)
+public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null, List<Coin>? inventarioInicialDeMonedas = null)
 {
     private static readonly Dictionary<Producto, decimal> ListaDePrecios = new()
     {
@@ -9,15 +9,15 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
         {Producto.Candy, 0.65m}
     };
 
-    private readonly List<Producto> _inventarioInicial = inventarioInicial ?? [];
-    private readonly List<Coin> _inventarioMonedas = inventarioInicialMonedas ?? [];
+    private readonly List<Producto> _inventarioProductos = inventarioInicialDeProductos ?? [];
+    private readonly List<Coin> _inventarioMonedas = inventarioInicialDeMonedas ?? [];
     private readonly List<Coin> _monedasInsertadas = [];
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
         var precio = ObtenerPrecioDe(producto);
         var totalIngresado = CalcularValorIngresado();
-        var tieneProducto = _inventarioInicial.Contains(producto);
+        var tieneProducto = _inventarioProductos.Contains(producto);
         var puedeDarVueltas = TryDarVueltas(totalIngresado, precio, out var vueltas);
 
         return (tieneProducto, totalIngresado, puedeDarVueltas) switch
@@ -58,11 +58,9 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
 
     private VendingMachineRespuesta DispensarProducto(Producto producto, Coin[] monedasRetornadas)
     {
-        _inventarioInicial.Remove(producto);
+        _inventarioProductos.Remove(producto);
         return VendingMachineRespuesta.ThankYou(producto, monedasRetornadas);
     }
-
-
     
     private List<Coin> CalcularVueltas(decimal diferencia)
     {
