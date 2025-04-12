@@ -29,14 +29,26 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
 
         var diferencia = CalcularMontoIngresado() - ObtenerPrecioDe(producto);
         
-        var vueltas = _inventarioMonedas
+        var monedasParaVueltas = _inventarioMonedas
             .Where(m => diferencia % m.Valor()  == 0)
+            .OrderByDescending(m => m.Valor())
             .ToArray();
+        
+        var vueltas = new List<Coin>();
 
-        if (vueltas.Length == 0)
+        foreach (var moneda in monedasParaVueltas)
+        {
+            vueltas.Add(moneda);
+            diferencia -= moneda.Valor();
+            
+            if (diferencia == 0)
+                break;
+        }
+
+        if (monedasParaVueltas.Length == 0)
             return new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null);
 
-        return new VendingMachineRespuesta("THANK YOU", vueltas, producto);
+        return new VendingMachineRespuesta("THANK YOU", vueltas.ToArray(), producto);
     }
 
     private static decimal ObtenerPrecioDe(Producto producto)

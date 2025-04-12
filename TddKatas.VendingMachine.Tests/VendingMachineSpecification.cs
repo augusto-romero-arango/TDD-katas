@@ -156,6 +156,21 @@ public class VendingMachineSpecification
         Assert.Equivalent(respuesta, new VendingMachineRespuesta("THANK YOU", [Coin.Nickel, Coin.Nickel], Producto.Candy));
     }
     
+    [Fact]
+    public void SeleccionarProducto_Cuando_Dinero_Ingresado_Es_Mayor_Al_Precio_Y_Hay_Cambio_Prefiere_Retorna_Venta_Con_Vueltas_De_Mayor_Denominacion()
+    {
+        var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
+        var inventarioInicialMonedas = new List<Coin>() {Coin.Nickel, Coin.Nickel, Coin.Dime};    
+        var maquina = new VendingMachine(inventarioInicial, inventarioInicialMonedas);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        
+        var respuesta = maquina.SeleccionarProducto(Producto.Candy);
+    
+        Assert.Equivalent(respuesta, new VendingMachineRespuesta("THANK YOU", [Coin.Dime], Producto.Candy));
+    }
+    
     
     
 }
