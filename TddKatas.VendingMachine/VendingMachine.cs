@@ -1,6 +1,6 @@
 ﻿namespace TddKatas.VendingMachine;
 
-public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin> inventarioInicialMonedas = null)
+public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>? inventarioInicialMonedas = null)
 {
     private static readonly Dictionary<Producto, decimal> ListaDePrecios = new()
     {
@@ -15,19 +15,23 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
+        
         if (_inventarioInicial.Contains(producto) == false)
             return new VendingMachineRespuesta("SOLD OUT", [], null);
 
-        if (CalcularMontoIngresado() < ObtenerPrecioDe(producto))
-            return new VendingMachineRespuesta($"PRICE: $ {ObtenerPrecioDe(producto):F2}", [], null);
+        var precio = ObtenerPrecioDe(producto);
+        var totalIngresado = CalcularMontoIngresado();
+        
+        if (totalIngresado < precio)
+            return new VendingMachineRespuesta($"PRICE: $ {precio:F2}", [], null);
 
-        if (CalcularMontoIngresado() == ObtenerPrecioDe(producto))
+        if (totalIngresado == precio)
         {
             _inventarioInicial.Remove(producto);
             return new VendingMachineRespuesta("THANK YOU", [], producto);
         }
 
-        var diferencia = CalcularMontoIngresado() - ObtenerPrecioDe(producto);
+        var diferencia = totalIngresado - precio;
         
         var vueltas = CalcularCambio(diferencia);
 
@@ -39,21 +43,9 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
 
     private List<Coin> CalcularCambio(decimal diferencia)
     {
-        var monedasParaVueltas = _inventarioMonedas
-            .Where(m => m.Valor() <= diferencia)
-            .OrderByDescending(m => m.Valor())
-            .ToList();
-
-        var vueltas = new List<Coin>();
-        decimal vueltasAcumuladas = 0;
-        monedasParaVueltas.ForEach(m =>
-        {
-            if (vueltasAcumuladas >= diferencia) return;
-            vueltas.Add(m);
-            vueltasAcumuladas += m.Valor();
-        });
-
-        return vueltas;
+        return _inventarioMonedas
+            .InferioresA(diferencia)
+            .ObtenerHastaCompletar(diferencia);
     }
 
     private static decimal ObtenerPrecioDe(Producto producto)
@@ -70,7 +62,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
 
     private decimal CalcularMontoIngresado()
     {
-        return _monedasInsertadas.Select(m => m.Valor()).Sum();
+        return _monedasInsertadas.Totalizar();
     }
 
     public VendingMachineRespuesta RetornarMonedas()
