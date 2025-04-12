@@ -29,6 +29,16 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
 
         var diferencia = CalcularMontoIngresado() - ObtenerPrecioDe(producto);
         
+        var vueltas = CalcularCambio(diferencia);
+
+        if (vueltas.Count == 0)
+            return new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null);
+
+        return new VendingMachineRespuesta("THANK YOU", vueltas.ToArray(), producto);
+    }
+
+    private List<Coin> CalcularCambio(decimal diferencia)
+    {
         var monedasParaVueltas = _inventarioMonedas
             .Where(m => diferencia % m.Valor()  == 0)
             .OrderByDescending(m => m.Valor())
@@ -45,10 +55,7 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
                 break;
         }
 
-        if (monedasParaVueltas.Length == 0)
-            return new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null);
-
-        return new VendingMachineRespuesta("THANK YOU", vueltas.ToArray(), producto);
+        return vueltas;
     }
 
     private static decimal ObtenerPrecioDe(Producto producto)
