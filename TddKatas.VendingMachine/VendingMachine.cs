@@ -38,14 +38,16 @@ public class VendingMachine
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         _monedasInsertadas.Add(monedaIngresada);
-        _saldoIngresado += monedaIngresada.Valor();
+        _saldoIngresado = _monedasInsertadas.Select(m => m.Valor()).Sum();
         
         return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {_saldoIngresado:F2}", []);
     }
 
     public VendingMachineRespuesta RetornarMonedas()
     {
+        var monedasARetornar = _monedasInsertadas.ToArray();
+        _monedasInsertadas.Clear();
         
-        return new VendingMachineRespuesta("INSERT COIN", _monedasInsertadas.ToArray());
+        return new VendingMachineRespuesta("INSERT COIN", monedasARetornar);
     }
 }
