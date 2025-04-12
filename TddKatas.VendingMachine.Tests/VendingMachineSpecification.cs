@@ -38,6 +38,17 @@ public class VendingMachineSpecification
         
         Assert.Equal(respuesta, new VendingMachineRespuesta(displayEspeado));
     }
+
+    [Fact]
+    public void InsertarMoneda_Cuando_Acumula_Monedas_Retorna_CURRENT_AMOUNT_Totalizado()
+    {
+        var maquina = new VendingMachine();
+        _ = maquina.InsertarMoneda(Coin.Quarter);
+        
+        var respuesta = maquina.InsertarMoneda(Coin.Dime);
+        
+        Assert.Equal(respuesta, new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.35"));
+    }
 }
 
 public enum Coin
