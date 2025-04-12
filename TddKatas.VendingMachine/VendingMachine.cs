@@ -28,22 +28,26 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
             (tieneProducto: true, _, puedeDarVueltas: true) => DispensarProducto(producto, vueltas),
             _ => VendingMachineRespuesta.ExactChangeOnly()
         };
-
     }
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         _monedasInsertadas.Add(monedaIngresada);
+        _inventarioMonedas.Add(monedaIngresada);
+        
         return VendingMachineRespuesta.CurrentAmount(CalcularValorIngresado());
     }
 
     public VendingMachineRespuesta RetornarMonedas()
     {
+        _monedasInsertadas.ForEach(coin => _inventarioMonedas.Remove(coin));
+        
         var monedasARetornar = _monedasInsertadas.ToArray();
         _monedasInsertadas.Clear();
         
         return VendingMachineRespuesta.InsertCoin(monedasARetornar);
     }
+
     private bool TryDarVueltas(decimal totalIngresado, decimal precio, out Coin[] vueltas)
     {
         var diferencia = totalIngresado - precio;
