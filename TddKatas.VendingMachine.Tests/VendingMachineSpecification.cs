@@ -94,13 +94,20 @@ public class VendingMachine
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
-        var valorMoneda = (int)monedaIngresada / 100.0;
-
-        _saldoIngresado += valorMoneda;
+        _saldoIngresado += monedaIngresada.Valor();
         
         return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {_saldoIngresado:F2}");
     }
 }
+
+public static class CoinExtensions
+{
+    public static double Valor(this Coin moneda)
+    {
+        return (int)moneda / 100.0;
+    }
+}
+
 
 public enum Producto
 {
