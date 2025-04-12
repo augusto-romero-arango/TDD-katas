@@ -26,14 +26,15 @@ public class VendingMachineSpecification
         Assert.Equal(respuesta, new VendingMachineRespuesta(displayEsperado));
     }
     
-    [Fact]
-    public void InsertarMoneda_CuandoEsValida_Retorna_CURRENT_AMOUNT()
+    [Theory]
+    [InlineData(Coin.Quarter, "CURRENT AMOUNT: $ 0.50")]
+    public void InsertarMoneda_CuandoEsValida_Retorna_CURRENT_AMOUNT(Coin monedaIngresada, string displayEspeado)
     {
         var maquina = new VendingMachine();
 
-        var respuesta = maquina.InsertarMoneda(Coin.Quarter); 
+        var respuesta = maquina.InsertarMoneda(monedaIngresada); 
         
-        Assert.Equal(respuesta, new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.50"));
+        Assert.Equal(respuesta, new VendingMachineRespuesta(displayEspeado));
     }
 }
 
@@ -75,7 +76,7 @@ public class VendingMachine
         return  listaDePrecios[producto];
     }
 
-    public VendingMachineRespuesta InsertarMoneda(Coin quarter)
+    public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         return new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.50");
     }
