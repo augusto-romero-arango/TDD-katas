@@ -61,6 +61,7 @@ public enum Coin
 public class VendingMachine
 {
     private readonly List<Producto> _inventarioInicial;
+    private double _saldoIngresado = 0;
 
     public VendingMachine()
     {
@@ -94,7 +95,10 @@ public class VendingMachine
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         var valorMoneda = (int)monedaIngresada / 100.0;
-        return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {valorMoneda:F2}");
+
+        _saldoIngresado += valorMoneda;
+        
+        return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {_saldoIngresado:F2}");
     }
 }
 
