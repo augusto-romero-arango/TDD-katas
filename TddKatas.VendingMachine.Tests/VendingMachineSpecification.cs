@@ -18,7 +18,7 @@ public class VendingMachineSpecification
     [InlineData(Producto.Candy, "PRICE: $ 0.65")]
     public void SeleccionarProducto_CuandoHayInventario_Y_No_Hay_Dinero_Suficiente_Retorna_PRICE(Producto productoSolicitado, string displayEsperado)
     {
-        var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola};
+        var inventarioInicial = new List<Producto>() {Producto.Chips, Producto.Cola, Producto.Candy};
         var maquina = new VendingMachine(inventarioInicial);
 
         var respuesta = maquina.SelaccionarProducto(productoSolicitado); 
@@ -45,8 +45,10 @@ public class VendingMachine
         if(_inventarioInicial.Contains(producto))
             if(producto == Producto.Chips)
                 return new VendingMachineRespuesta("PRICE: $ 0.50");
-            else
+            else if(producto == Producto.Cola)
                 return new VendingMachineRespuesta("PRICE: $ 1.00");
+            else
+                return new VendingMachineRespuesta("PRICE: $ 0.65");
         
         return new VendingMachineRespuesta("SOLD OUT");
     }
