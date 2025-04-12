@@ -1,6 +1,6 @@
 ﻿namespace TddKatas.VendingMachine;
 
-public class Inventario(List<Producto>? inventarioInicial = null)
+internal class Inventario(List<Producto>? inventarioInicial = null)
 {
     private readonly List<Producto> _inventarioProductos = inventarioInicial ?? [];
 

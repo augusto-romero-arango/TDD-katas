@@ -1,4 +1,7 @@
-﻿namespace TddKatas.VendingMachine;
+﻿using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("TddKatas.VendingMachine.Tests")]
+namespace TddKatas.VendingMachine;
 
 public enum Coin
 {
@@ -7,7 +10,8 @@ public enum Coin
     Nickel = 5
 }
 
-public static class CoinExtensions
+
+internal static class CoinExtensions
 {
     public static decimal Valor(this Coin moneda)
     {

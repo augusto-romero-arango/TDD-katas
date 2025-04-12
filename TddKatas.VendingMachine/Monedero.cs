@@ -1,6 +1,6 @@
 ﻿namespace TddKatas.VendingMachine;
 
-public class Monedero(List<Coin>? inventarioInicialDeMonedas = null)
+internal class Monedero(List<Coin>? inventarioInicialDeMonedas = null)
 {
     private readonly List<Coin> _inventarioMonedas = inventarioInicialDeMonedas ?? [];
     private readonly List<Coin> _monedasInsertadas = [];
