@@ -60,6 +60,13 @@ public enum Coin
 
 public class VendingMachine
 {
+    private static readonly Dictionary<Producto, double> ListaDePrecios = new()
+    {
+        { Producto.Chips, 0.5 },
+        { Producto.Cola, 1 },
+        { Producto.Candy, 0.65 }
+    };
+
     private readonly List<Producto> _inventarioInicial;
     private double _saldoIngresado = 0;
 
@@ -82,14 +89,7 @@ public class VendingMachine
 
     private static double ObtenerPrecioDe(Producto producto)
     {
-        var listaDePrecios = new Dictionary<Producto, double>
-        {
-            { Producto.Chips, 0.5 },
-            { Producto.Cola, 1 },
-            { Producto.Candy, 0.65 }
-        };
-        
-        return  listaDePrecios[producto];
+        return  ListaDePrecios[producto];
     }
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
