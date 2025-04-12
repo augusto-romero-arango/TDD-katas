@@ -42,19 +42,16 @@ public class VendingMachine(List<Producto>? inventarioInicial = null, List<Coin>
         var monedasParaVueltas = _inventarioMonedas
             .Where(m => m.Valor() <= diferencia)
             .OrderByDescending(m => m.Valor())
-            
-            .ToArray();
-        
-        var vueltas = new List<Coin>();
+            .ToList();
 
-        foreach (var moneda in monedasParaVueltas)
+        var vueltas = new List<Coin>();
+        decimal vueltasAcumuladas = 0;
+        monedasParaVueltas.ForEach(m =>
         {
-            vueltas.Add(moneda);
-            diferencia -= moneda.Valor();
-            
-            if (diferencia == 0)
-                break;
-        }
+            if (vueltasAcumuladas >= diferencia) return;
+            vueltas.Add(m);
+            vueltasAcumuladas += m.Valor();
+        });
 
         return vueltas;
     }
