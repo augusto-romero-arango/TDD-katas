@@ -50,12 +50,14 @@ public class VendingMachine
 
     private static double ObtenerPrecioDe(Producto producto)
     {
-        return  producto switch
+        var listaDePrecios = new Dictionary<Producto, double>
         {
-            Producto.Chips => 0.5, 
-            Producto.Cola => 1, 
-            Producto.Candy => 0.65,
+            { Producto.Chips, 0.5 },
+            { Producto.Cola, 1 },
+            { Producto.Candy, 0.65 }
         };
+        
+        return  listaDePrecios[producto];
     }
 }
 
