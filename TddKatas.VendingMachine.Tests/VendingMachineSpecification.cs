@@ -80,7 +80,8 @@ public class VendingMachine
 
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
-        return new VendingMachineRespuesta("CURRENT AMOUNT: $ 0.25");
+        var valorMoneda = (int)monedaIngresada / 100.0;
+        return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {valorMoneda:F2}");
     }
 }
 
