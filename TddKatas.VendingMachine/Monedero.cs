@@ -22,7 +22,7 @@ internal class Monedero(List<Coin>? inventarioInicialDeMonedas = null)
 
         return VaciarMonedasRecienInsertadas();
     }
-    
+
     public bool TryDarVueltas(decimal totalIngresado, decimal precio, out Coin[] vueltas)
     {
         var diferencia = totalIngresado - precio;
@@ -30,7 +30,7 @@ internal class Monedero(List<Coin>? inventarioInicialDeMonedas = null)
 
         return vueltas.Totalizar() == diferencia;
     }
-    
+
     private List<Coin> CalcularVueltas(decimal diferencia)
     {
         return _inventarioMonedas
@@ -42,7 +42,7 @@ internal class Monedero(List<Coin>? inventarioInicialDeMonedas = null)
     {
         var monedasARetornar = _monedasInsertadas.ToArray();
         _monedasInsertadas.Clear();
-        
+
         return monedasARetornar;
     }
 
@@ -50,6 +50,4 @@ internal class Monedero(List<Coin>? inventarioInicialDeMonedas = null)
     {
         _monedasInsertadas.ForEach(coin => _inventarioMonedas.Remove(coin));
     }
-
-    
 }

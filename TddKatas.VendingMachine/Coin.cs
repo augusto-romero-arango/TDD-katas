@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("TddKatas.VendingMachine.Tests")]
+
 namespace TddKatas.VendingMachine;
 
 public enum Coin
@@ -11,14 +12,13 @@ public enum Coin
     Penny = 1
 }
 
-
 internal static class CoinExtensions
 {
     public static decimal Valor(this Coin moneda)
     {
-        return (int)moneda / 100m;
+        return (int) moneda / 100m;
     }
-    
+
     public static List<Coin> ObtenerInferioresA(this List<Coin> monedas, decimal diferencia)
     {
         return monedas
@@ -26,7 +26,7 @@ internal static class CoinExtensions
             .OrderByDescending(m => m.Valor())
             .ToList();
     }
-    
+
     public static List<Coin> ObtenerHastaCompletar(this IEnumerable<Coin> monedas, decimal valorACompletar)
     {
         var vueltas = new List<Coin>();
@@ -43,14 +43,14 @@ internal static class CoinExtensions
 
         return vueltas;
     }
-    
+
     public static decimal Totalizar(this IEnumerable<Coin> monedas)
     {
         return monedas
             .Select(m => m.Valor())
             .Sum();
     }
-    
+
     public static bool EsValida(this Coin moneda)
     {
         return moneda != Coin.Penny;

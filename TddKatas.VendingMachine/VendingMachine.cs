@@ -2,8 +2,8 @@
 
 public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null, List<Coin>? saldoInicialDeCaja = null)
 {
-    private readonly Monedero _monedero = new (saldoInicialDeCaja);
-    private readonly Inventario _inventario = new (inventarioInicialDeProductos);
+    private readonly Monedero _monedero = new(saldoInicialDeCaja);
+    private readonly Inventario _inventario = new(inventarioInicialDeProductos);
 
     public VendingMachineRespuesta SeleccionarProducto(Producto producto)
     {
@@ -15,8 +15,10 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
         return (tieneProducto, totalIngresado, puedeDarVueltas) switch
         {
             (tieneProducto: false, _, _) => VendingMachineRespuesta.SoldOut(),
-            (tieneProducto: true, var valorIngresado, _) when valorIngresado < precio => VendingMachineRespuesta.Price(precio),
-            (tieneProducto: true, var valorIngresado, _) when valorIngresado == precio => DispensarProducto(producto, []),
+            (tieneProducto: true, var valorIngresado, _) when valorIngresado < precio =>
+                VendingMachineRespuesta.Price(precio),
+            (tieneProducto: true, var valorIngresado, _) when valorIngresado == precio => DispensarProducto(producto,
+                []),
             (tieneProducto: true, _, puedeDarVueltas: true) => DispensarProducto(producto, vueltas),
             _ => VendingMachineRespuesta.ExactChangeOnly()
         };
@@ -27,7 +29,7 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
         return monedaIngresada.EsValida() switch
         {
             true => InsertarMonedaValida(monedaIngresada),
-            false =>VendingMachineRespuesta.InvalidCoin(monedaIngresada) 
+            false => VendingMachineRespuesta.InvalidCoin(monedaIngresada)
         };
     }
 
@@ -42,7 +44,7 @@ public class VendingMachine(List<Producto>? inventarioInicialDeProductos = null,
         var monedasARetornar = _monedero.RetornarMonedasRecienIngresadas();
         return VendingMachineRespuesta.InsertCoin(monedasARetornar);
     }
-    
+
     private VendingMachineRespuesta DispensarProducto(Producto producto, Coin[] monedasRetornadas)
     {
         _inventario.QuitarProductoDelInventario(producto);
