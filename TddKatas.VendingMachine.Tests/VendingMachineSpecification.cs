@@ -42,6 +42,16 @@ public class VendingMachineSpecification
     }
 
     [Fact]
+    public void InsertarMoneda_CuandoEsInvalida_Retorna_INSERT_COIN_Y_Devuelve_Moneda()
+    {
+        var maquina = new VendingMachine();
+
+        var respuesta = maquina.InsertarMoneda(Coin.Penny);
+        
+        Assert.Equal(respuesta, VendingMachineRespuesta.InsertCoin([Coin.Penny]));
+    }
+
+    [Fact]
     public void InsertarMoneda_Cuando_Acumula_Monedas_Retorna_CURRENT_AMOUNT_Totalizado()
     {
         var maquina = new VendingMachine();
