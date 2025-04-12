@@ -10,7 +10,6 @@ public class VendingMachine
     };
 
     private readonly List<Producto> _inventarioInicial;
-    private double _saldoIngresado = 0;
     private readonly List<Coin> _monedasInsertadas = [];
 
     public VendingMachine()
@@ -38,9 +37,8 @@ public class VendingMachine
     public VendingMachineRespuesta InsertarMoneda(Coin monedaIngresada)
     {
         _monedasInsertadas.Add(monedaIngresada);
-        _saldoIngresado = CalcularMontoIngresado();
         
-        return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {_saldoIngresado:F2}", []);
+        return new VendingMachineRespuesta($"CURRENT AMOUNT: $ {CalcularMontoIngresado():F2}", []);
     }
 
     private double CalcularMontoIngresado()
