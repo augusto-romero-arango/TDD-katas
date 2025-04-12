@@ -20,8 +20,13 @@ public class VendingMachine(List<Producto>? inventarioInicial = null)
         if (CalcularMontoIngresado() < ObtenerPrecioDe(producto))
             return new VendingMachineRespuesta($"PRICE: $ {ObtenerPrecioDe(producto):F2}", [], null);
 
-        _inventarioInicial.Remove(producto);
-        return new VendingMachineRespuesta("THANK YOU", [], producto);
+        if (CalcularMontoIngresado() == ObtenerPrecioDe(producto))
+        {
+            _inventarioInicial.Remove(producto);
+            return new VendingMachineRespuesta("THANK YOU", [], producto);
+        }
+        
+        return new VendingMachineRespuesta("EXACT CHANGE ONLY", [], null);
     }
 
     private static double ObtenerPrecioDe(Producto producto)

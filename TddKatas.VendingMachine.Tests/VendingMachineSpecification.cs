@@ -119,6 +119,7 @@ public class VendingMachineSpecification
         var maquina = new VendingMachine(inventarioInicial);
         _ = maquina.InsertarMoneda(Coin.Quarter);
         _ = maquina.InsertarMoneda(Coin.Quarter);
+        _ = maquina.InsertarMoneda(Coin.Quarter);
         
         var respuesta = maquina.SeleccionarProducto(Producto.Candy);
 
