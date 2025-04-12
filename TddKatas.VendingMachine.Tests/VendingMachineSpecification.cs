@@ -26,16 +26,22 @@ public class VendingMachineSpecification
 
 public class VendingMachine
 {
+    private readonly List<Producto> _inventarioInicial;
+
     public VendingMachine()
     {
-        
+        _inventarioInicial = [];
     }
     public VendingMachine(List<Producto> inventarioInicial)
     {
+        _inventarioInicial = inventarioInicial;
     }
 
     public VendingMachineRespuesta SelaccionarProducto(Producto producto)
     {
+        if(_inventarioInicial.Contains(producto))
+            return new VendingMachineRespuesta("PRICE: $ 0.50");
+        
         return new VendingMachineRespuesta("SOLD OUT");
     }
 }
