@@ -17,7 +17,7 @@ public class VendingMachine
 {
     public VendingMachineRespuesta SelaccionarProducto(Producto producto)
     {
-        throw new NotImplementedException();
+        return new VendingMachineRespuesta("SOLD OUT");
     }
 }
 
