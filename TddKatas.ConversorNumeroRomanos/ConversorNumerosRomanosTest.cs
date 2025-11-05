@@ -242,7 +242,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be(romanoEsperado);
     }
-    
+
     [Fact]
     public void Si_50_es_L()
     {
@@ -252,7 +252,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("L");
     }
-    
+
     [Theory]
     [InlineData(51, "LI")]
     [InlineData(54, "LIV")]
@@ -267,7 +267,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be(romanoEsperado);
     }
-    
+
     [Fact]
     public void Si_60_es_LX()
     {
@@ -277,7 +277,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("LX");
     }
-    
+
     [Theory]
     [InlineData(61, "LXI")]
     [InlineData(64, "LXIV")]
@@ -292,7 +292,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be(romanoEsperado);
     }
-    
+
     [Fact]
     public void Si_70_es_LXX()
     {
@@ -302,7 +302,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("LXX");
     }
-    
+
     [Theory]
     [InlineData(71, "LXXI")]
     [InlineData(74, "LXXIV")]
@@ -317,7 +317,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be(romanoEsperado);
     }
-    
+
     [Fact]
     public void Si_80_es_LXXX()
     {
@@ -327,7 +327,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("LXXX");
     }
-    
+
     [Theory]
     [InlineData(81, "LXXXI")]
     [InlineData(84, "LXXXIV")]
@@ -342,7 +342,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be(romanoEsperado);
     }
-    
+
     [Fact]
     public void Si_90_es_XC()
     {
@@ -352,7 +352,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("XC");
     }
-    
+
     [Theory]
     [InlineData(91, "XCI")]
     [InlineData(94, "XCIV")]
@@ -367,7 +367,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be(romanoEsperado);
     }
-    
+
     [Fact]
     public void Si_100_es_C()
     {
@@ -383,84 +383,26 @@ public class ConversorDecimalARomanos
 {
     public string Convertir(int numero)
     {
-        string romano;
+        return numero switch
+        {
+            > 0 and <= 9 => ConvertirUnidades(numero),
+            >= 10 and <= 99 => ConvertirDecenas(numero),
+            _ => "C"
+        };
+    }
 
-
-        if (numero is > 0 and <= 9)
+    private static string ConvertirDecenas(int numero)
+    {
+        var decena = numero / 10 % 10;
+        return decena switch
         {
-            romano = ConvertirUnidades(numero);
-        }
-
-        else if (numero is >= 10 and <= 19)
-        {
-            if (numero == 10)
-                romano = "X";
-            else
-                romano = "X" + ConvertirUnidades(numero % 10);
-        }
-        else if (numero is >= 20 and <= 29)
-        {
-            if (numero == 20)
-                romano = "XX";
-            else
-                romano = "XX" + ConvertirUnidades(numero % 10);
-        }
-        else if (numero is >= 30 and <= 39)
-        {
-            if (numero == 30)
-                romano = "XXX";
-            else
-                romano = "XXX" + ConvertirUnidades(numero % 10);
-        }
-        else if(numero is >= 40 and <= 49)
-        {
-            if (numero == 40)
-                romano = "XL";
-            else
-                romano = "XL" + ConvertirUnidades(numero % 10);
-        }
-        else if(numero is>= 50 and <= 59)
-        {
-            if (numero == 50)
-                romano = "L";
-            else
-                romano = "L" + ConvertirUnidades(numero % 10);
-        }
-        else if(numero is >= 60 and <= 69)
-        {
-            if (numero == 60)
-                romano = "LX";
-            else
-                romano = "LX" + ConvertirUnidades(numero % 10);
-        }
-        else if(numero is >= 70 and <=79)
-        {
-            if (numero == 70)
-                romano = "LXX";
-            else
-                romano = "LXX" + ConvertirUnidades(numero % 10);
-        }
-        else if (numero is >= 80 and <=89)
-        {
-            if (numero == 80)
-                romano = "LXXX";
-            else
-                romano = "LXXX" + ConvertirUnidades(numero % 10);
-        }
-        else if(numero is >= 90 and <=99)
-        {
-            if (numero == 90)
-                romano = "XC";
-            else
-                romano = "XC" + ConvertirUnidades(numero % 10);
-        }
-        else
-        {
-            romano = "C";
-        }
-
-
-        return romano;
+            > 0 and <= 3 => new string('X', decena) + ConvertirUnidades(numero % 10),
+            4 => "XL" + ConvertirUnidades(numero % 10),
+            5 => "L" + ConvertirUnidades(numero % 10),
+            >= 6 and <= 8 => "L" + new string('X', decena - 5) + ConvertirUnidades(numero % 10),
+            9 => "XC" + ConvertirUnidades(numero % 10),
+            _ => ""
+        };
     }
 
     private static string ConvertirUnidades(int numero)
@@ -471,7 +413,8 @@ public class ConversorDecimalARomanos
             4 => "IV",
             5 => "V",
             > 5 and <= 8 => "V" + new string('I', numero - 5),
-            _ => "IX"
+            9 => "IX",
+            _ => ""
         };
     }
 }
