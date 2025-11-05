@@ -143,7 +143,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("XIV");
     }
-    
+
     [Fact]
     public void Si_es_15_es_XV()
     {
@@ -153,7 +153,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("XV");
     }
-    
+
     [Theory]
     [InlineData(16, "XVI")]
     [InlineData(17, "XVII")]
@@ -166,7 +166,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be(romanoEsperado);
     }
-    
+
     [Fact]
     public void Si_es_19_es_XIX()
     {
@@ -176,7 +176,7 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("XIX");
     }
-    
+
     [Fact]
     public void Si_es_20_es_XX()
     {
@@ -186,7 +186,6 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("XX");
     }
-    
 }
 
 public class ConversorDecimalARomanos
@@ -194,45 +193,37 @@ public class ConversorDecimalARomanos
     public string Convertir(int numero)
     {
         string romano;
-        
-     
+
+
         if (numero is > 0 and <= 9)
         {
-            
-            if (numero is > 0 and <= 3)
-                romano = new string('I', numero);
-            else if (numero == 4)
-                romano = "IV";
-            else if (numero == 5)
-                romano = "V";
-            else if (numero is > 5 and <= 8)
-                romano = "V" + new string('I', numero - 5);
-            else
-                romano =  "IX";
-        
-           
+            romano = ConvertirUnidades(numero);
         }
-        else if (numero == 10)
-            romano = "X";
-        else if (numero is >10 and <= 19)
+
+        else if (numero is >= 10 and <= 19)
         {
-            
-            if (numero is > 10 and <= 13)
-                romano = "X" + new string('I', numero - 10);
-            else if (numero == 14)
-                romano = "XIV";
-            else if (numero == 15)
-                romano = "XV";
-            else if (numero is > 15 and <= 18)
-                romano = "XV" + new string('I', numero - 15);
+            if (numero == 10)
+                romano = "X";
             else
-                romano =  "XIX";
-        
+                romano = "X" + ConvertirUnidades(numero % 10);
+            
         }
 
         else
             return "XX";
 
         return romano;
+    }
+
+    private static string ConvertirUnidades(int numero)
+    {
+        return numero switch
+        {
+            > 0 and <= 3 => new string('I', numero),
+            4 => "IV",
+            5 => "V",
+            > 5 and <= 8 => "V" + new string('I', numero - 5),
+            _ => "IX"
+        };
     }
 }
