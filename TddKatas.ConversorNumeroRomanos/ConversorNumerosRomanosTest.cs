@@ -198,59 +198,41 @@ public class ConversorDecimalARomanos
      
         if (numero is > 0 and <= 9)
         {
-            string romano1;
+            
             if (numero is > 0 and <= 3)
-                romano1 = ConvertirFinalizadosDe1A3(numero, "");
+                romano = new string('I', numero);
             else if (numero == 4)
-                romano1 = "IV";
+                romano = "IV";
             else if (numero == 5)
-                romano1 = "V";
-            else if(numero is > 5 and <= 8)
-                romano1 = ConvertirFinalizadosDe1A3(numero, "V");
-            else 
-                romano1 =  "IX";
+                romano = "V";
+            else if (numero is > 5 and <= 8)
+                romano = "V" + new string('I', numero - 5);
+            else
+                romano =  "IX";
         
-            romano = ""+romano1;
+           
         }
         else if (numero == 10)
             romano = "X";
         else if (numero is >10 and <= 19)
         {
-            string romano1;
+            
             if (numero is > 10 and <= 13)
-                romano1 = ConvertirFinalizadosDe1A3(numero, "X");
+                romano = "X" + new string('I', numero - 10);
             else if (numero == 14)
-                romano1 = "XIV";
+                romano = "XIV";
             else if (numero == 15)
-                romano1 = "XV";
-            else if(numero is > 15 and <= 18)
-                romano1 = ConvertirFinalizadosDe1A3(numero, "XV");
-            else 
-                romano1 =  "XIX";
+                romano = "XV";
+            else if (numero is > 15 and <= 18)
+                romano = "XV" + new string('I', numero - 15);
+            else
+                romano =  "XIX";
         
-            romano = romano1;
         }
 
         else
             return "XX";
 
         return romano;
-    }
-
-    
-
-    private static string ConvertirFinalizadosDe1A3(int numero, string romanoAnterior)
-    {
-        int diferencia;
-        if (romanoAnterior == "")
-            diferencia = 0;
-        else if (romanoAnterior == "V")
-            diferencia = 5;
-        else if(romanoAnterior == "X")
-            diferencia = 10;
-        else
-            diferencia = 15;
-        
-        return romanoAnterior + new string('I', numero - diferencia);
     }
 }
