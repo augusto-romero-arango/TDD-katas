@@ -453,56 +453,36 @@ public class ConversorDecimalARomanos
 {
     public string Convertir(int numero)
     {
-        if (numero is > 0 and <= 9)
-            return ConvertirUnidades(numero);
-        if (numero is >= 10 and <= 99)
-            return ConvertirDecenas(numero) + ConvertirUnidades(numero);
-
-        
-
-        return ConvertirCentenas(numero)
-               + ConvertirDecenas(numero)
-               + ConvertirUnidades(numero);
+        return ConvertirCentenas(numero) + ConvertirDecenas(numero) + ConvertirUnidades(numero);
     }
 
     private static string ConvertirCentenas(int numero)
     {
-        var centena = numero / 100 % 100;
-        return centena switch
-        {
-            > 0 and <= 3 => new string('C', centena),
-            4 => "CD",
-            5 => "D",
-            >= 6 and <= 8 => "D" + new string('C', centena - 5),
-            9 => "CM",
-            _ => ""
-        };
+        return ConvertirRomanoSegunMagnitud(numero, 100, 'C', "D", "M");
     }
 
     private static string ConvertirDecenas(int numero)
     {
-        var decena = numero / 10 % 10;
-        return decena switch
-        {
-            > 0 and <= 3 => new string('X', decena),
-            4 => "XL",
-            5 => "L",
-            >= 6 and <= 8 => "L" + new string('X', decena - 5),
-            9 => "XC",
-            _ => ""
-        };
+        return ConvertirRomanoSegunMagnitud(numero, 10, 'X', "L", "C");
     }
 
     private static string ConvertirUnidades(int numero)
     {
-        var unidades = numero % 10;
-        return unidades switch
+        return ConvertirRomanoSegunMagnitud(numero, 1, 'I', "V", "X");
+    }
+
+    private static string ConvertirRomanoSegunMagnitud(int numero, int ordenDeMagnitud, char unidadDelOrdenDeMagnitud,
+        string unidadDelQuintoElementoDelOrdenDeMagnitud, string unidadDelSiguienteOrdenDeMagnitud)
+    {
+        var magnitud = numero / ordenDeMagnitud % 10;
+        return magnitud switch
         {
-            > 0 and <= 3 => new string('I', unidades),
-            4 => "IV",
-            5 => "V",
-            > 5 and <= 8 => "V" + new string('I', unidades - 5),
-            9 => "IX",
+            > 0 and <= 3 => new string(unidadDelOrdenDeMagnitud, magnitud),
+            4 => unidadDelOrdenDeMagnitud + unidadDelQuintoElementoDelOrdenDeMagnitud,
+            5 => unidadDelQuintoElementoDelOrdenDeMagnitud,
+            >= 6 and <= 8 => unidadDelQuintoElementoDelOrdenDeMagnitud +
+                             new string(unidadDelOrdenDeMagnitud, magnitud - 5),
+            9 => unidadDelOrdenDeMagnitud + unidadDelSiguienteOrdenDeMagnitud,
             _ => ""
         };
     }
