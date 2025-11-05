@@ -237,23 +237,7 @@ public class ConversorDecimalARomanos
         return romano;
     }
 
-    private static string ConvertirTerminadosDel1Al9(int numero, string romanoAnterior)
-    {
-        
-        string romano;
-        if (numero is > 10 and <= 13)
-            romano = ConvertirFinalizadosDe1A3(numero, "X");
-        else if (numero == 14)
-            romano = "XIV";
-        else if (numero == 15)
-            romano = "XV";
-        else if(numero is > 15 and <= 18)
-            romano = ConvertirFinalizadosDe1A3(numero, "XV");
-        else 
-            romano =  "XIX";
-        
-        return romanoAnterior+romano;
-    }
+    
 
     private static string ConvertirFinalizadosDe1A3(int numero, string romanoAnterior)
     {
