@@ -186,6 +186,197 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("XX");
     }
+
+    [Theory]
+    [InlineData(21, "XXI")]
+    [InlineData(24, "XXIV")]
+    [InlineData(25, "XXV")]
+    [InlineData(26, "XXVI")]
+    [InlineData(29, "XXIX")]
+    public void Si_estaentre21y29_es_XXconlasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+
+    [Theory]
+    [InlineData(30, "XXX")]
+    [InlineData(31, "XXXI")]
+    [InlineData(34, "XXXIV")]
+    [InlineData(35, "XXXV")]
+    [InlineData(36, "XXXVI")]
+    [InlineData(39, "XXXIX")]
+    public void Si_estaentre30y39_es_XXXconlasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+
+    [Fact]
+    public void Si_40_es_XL()
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(40);
+
+        romano.Should().Be("XL");
+    }
+
+    [Theory]
+    [InlineData(41, "XLI")]
+    [InlineData(44, "XLIV")]
+    [InlineData(45, "XLV")]
+    [InlineData(46, "XLVI")]
+    [InlineData(49, "XLIX")]
+    public void Si_estaentre41y49_es_XLconlasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+    
+    [Fact]
+    public void Si_50_es_L()
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(50);
+
+        romano.Should().Be("L");
+    }
+    
+    [Theory]
+    [InlineData(51, "LI")]
+    [InlineData(54, "LIV")]
+    [InlineData(55, "LV")]
+    [InlineData(56, "LVI")]
+    [InlineData(59, "LIX")]
+    public void Si_estaentre51y59_es_LconlasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+    
+    [Fact]
+    public void Si_60_es_LX()
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(60);
+
+        romano.Should().Be("LX");
+    }
+    
+    [Theory]
+    [InlineData(61, "LXI")]
+    [InlineData(64, "LXIV")]
+    [InlineData(65, "LXV")]
+    [InlineData(66, "LXVI")]
+    [InlineData(69, "LXIX")]
+    public void Si_estaentre61y69_es_LXXconlasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+    
+    [Fact]
+    public void Si_70_es_LXX()
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(70);
+
+        romano.Should().Be("LXX");
+    }
+    
+    [Theory]
+    [InlineData(71, "LXXI")]
+    [InlineData(74, "LXXIV")]
+    [InlineData(75, "LXXV")]
+    [InlineData(76, "LXXVI")]
+    [InlineData(79, "LXXIX")]
+    public void Si_estaentre71y79_es_LXXconlasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+    
+    [Fact]
+    public void Si_80_es_LXXX()
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(80);
+
+        romano.Should().Be("LXXX");
+    }
+    
+    [Theory]
+    [InlineData(81, "LXXXI")]
+    [InlineData(84, "LXXXIV")]
+    [InlineData(85, "LXXXV")]
+    [InlineData(86, "LXXXVI")]
+    [InlineData(89, "LXXXIX")]
+    public void Si_estaentre81y89_es_LXXXconlasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+    
+    [Fact]
+    public void Si_90_es_XC()
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(90);
+
+        romano.Should().Be("XC");
+    }
+    
+    [Theory]
+    [InlineData(91, "XCI")]
+    [InlineData(94, "XCIV")]
+    [InlineData(95, "XCV")]
+    [InlineData(96, "XCVI")]
+    [InlineData(99, "XCIX")]
+    public void Si_estaentre91y99_es_XCconlasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+    
+    [Fact]
+    public void Si_100_es_C()
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(100);
+
+        romano.Should().Be("C");
+    }
 }
 
 public class ConversorDecimalARomanos
@@ -206,11 +397,68 @@ public class ConversorDecimalARomanos
                 romano = "X";
             else
                 romano = "X" + ConvertirUnidades(numero % 10);
-            
+        }
+        else if (numero is >= 20 and <= 29)
+        {
+            if (numero == 20)
+                romano = "XX";
+            else
+                romano = "XX" + ConvertirUnidades(numero % 10);
+        }
+        else if (numero is >= 30 and <= 39)
+        {
+            if (numero == 30)
+                romano = "XXX";
+            else
+                romano = "XXX" + ConvertirUnidades(numero % 10);
+        }
+        else if(numero is >= 40 and <= 49)
+        {
+            if (numero == 40)
+                romano = "XL";
+            else
+                romano = "XL" + ConvertirUnidades(numero % 10);
+        }
+        else if(numero is>= 50 and <= 59)
+        {
+            if (numero == 50)
+                romano = "L";
+            else
+                romano = "L" + ConvertirUnidades(numero % 10);
+        }
+        else if(numero is >= 60 and <= 69)
+        {
+            if (numero == 60)
+                romano = "LX";
+            else
+                romano = "LX" + ConvertirUnidades(numero % 10);
+        }
+        else if(numero is >= 70 and <=79)
+        {
+            if (numero == 70)
+                romano = "LXX";
+            else
+                romano = "LXX" + ConvertirUnidades(numero % 10);
+        }
+        else if (numero is >= 80 and <=89)
+        {
+            if (numero == 80)
+                romano = "LXXX";
+            else
+                romano = "LXXX" + ConvertirUnidades(numero % 10);
+        }
+        else if(numero is >= 90 and <=99)
+        {
+            if (numero == 90)
+                romano = "XC";
+            else
+                romano = "XC" + ConvertirUnidades(numero % 10);
+        }
+        else
+        {
+            romano = "C";
         }
 
-        else
-            return "XX";
 
         return romano;
     }
