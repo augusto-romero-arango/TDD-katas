@@ -377,17 +377,105 @@ public class ConversorNumerosRomanosTest
 
         romano.Should().Be("C");
     }
+
+    [Theory]
+    [InlineData(101, "CI")]
+    [InlineData(110, "CX")]
+    [InlineData(111, "CXI")]
+    [InlineData(114, "CXIV")]
+    [InlineData(144, "CXLIV")]
+    [InlineData(157, "CLVII")]
+    [InlineData(168, "CLXVIII")]
+    [InlineData(179, "CLXXIX")]
+    [InlineData(180, "CLXXX")]
+    [InlineData(199, "CXCIX")]
+    public void Si_esta_entre100y199_es_CDecenasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+
+    [Fact]
+    public void Si_200_es_CC()
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(200);
+
+        romano.Should().Be("CC");
+    }
+
+    [Theory]
+    [InlineData(201, "CCI")]
+    [InlineData(210, "CCX")]
+    [InlineData(211, "CCXI")]
+    [InlineData(214, "CCXIV")]
+    [InlineData(244, "CCXLIV")]
+    [InlineData(257, "CCLVII")]
+    [InlineData(268, "CCLXVIII")]
+    [InlineData(279, "CCLXXIX")]
+    [InlineData(280, "CCLXXX")]
+    [InlineData(299, "CCXCIX")]
+    public void Si_esta_entre200y299_es_CCDecenasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
+
+    [Theory]
+    [InlineData(101, "CI")]
+    [InlineData(210, "CCX")]
+    [InlineData(311, "CCCXI")]
+    [InlineData(414, "CDXIV")]
+    [InlineData(544, "DXLIV")]
+    [InlineData(657, "DCLVII")]
+    [InlineData(768, "DCCLXVIII")]
+    [InlineData(879, "DCCCLXXIX")]
+    [InlineData(980, "CMLXXX")]
+    [InlineData(999, "CMXCIX")]
+    public void Si_esta_entre100y999_es_CCDecenasUnidades(int numero, string romanoEsperado)
+    {
+        var decimalesARomanos = new ConversorDecimalARomanos();
+
+        string romano = decimalesARomanos.Convertir(numero);
+
+        romano.Should().Be(romanoEsperado);
+    }
 }
 
 public class ConversorDecimalARomanos
 {
     public string Convertir(int numero)
     {
-        return numero switch
+        if (numero is > 0 and <= 9)
+            return ConvertirUnidades(numero);
+        if (numero is >= 10 and <= 99)
+            return ConvertirDecenas(numero) + ConvertirUnidades(numero);
+
+        
+
+        return ConvertirCentenas(numero)
+               + ConvertirDecenas(numero)
+               + ConvertirUnidades(numero);
+    }
+
+    private static string ConvertirCentenas(int numero)
+    {
+        var centena = numero / 100 % 100;
+        return centena switch
         {
-            > 0 and <= 9 => ConvertirUnidades(numero),
-            >= 10 and <= 99 => ConvertirDecenas(numero),
-            _ => "C"
+            > 0 and <= 3 => new string('C', centena),
+            4 => "CD",
+            5 => "D",
+            >= 6 and <= 8 => "D" + new string('C', centena - 5),
+            9 => "CM",
+            _ => ""
         };
     }
 
@@ -396,23 +484,24 @@ public class ConversorDecimalARomanos
         var decena = numero / 10 % 10;
         return decena switch
         {
-            > 0 and <= 3 => new string('X', decena) + ConvertirUnidades(numero % 10),
-            4 => "XL" + ConvertirUnidades(numero % 10),
-            5 => "L" + ConvertirUnidades(numero % 10),
-            >= 6 and <= 8 => "L" + new string('X', decena - 5) + ConvertirUnidades(numero % 10),
-            9 => "XC" + ConvertirUnidades(numero % 10),
+            > 0 and <= 3 => new string('X', decena),
+            4 => "XL",
+            5 => "L",
+            >= 6 and <= 8 => "L" + new string('X', decena - 5),
+            9 => "XC",
             _ => ""
         };
     }
 
     private static string ConvertirUnidades(int numero)
     {
-        return numero switch
+        var unidades = numero % 10;
+        return unidades switch
         {
-            > 0 and <= 3 => new string('I', numero),
+            > 0 and <= 3 => new string('I', unidades),
             4 => "IV",
             5 => "V",
-            > 5 and <= 8 => "V" + new string('I', numero - 5),
+            > 5 and <= 8 => "V" + new string('I', unidades - 5),
             9 => "IX",
             _ => ""
         };
